@@ -38,11 +38,41 @@ async function queryBlockFromInterval(config, from, to) {
 	return result.body;
 }
 
-async function queryBlockSince(config, since) {
-	if (typeof (since) !== "number") {
+async function queryBlockSince(config, since, until) {
+	if (typeof (since) !== "number" || (until && typeof (until) !== "number")) {
 		throw new Error("Invalid type");
 	}
-	const result = await fetchGet(config.url + "/block/since/" + since.toString());
+	let result;
+	if (until) {
+		result = await fetchGet(config.url + "/block/since/" + since.toString() + "/until/" + until.toString());
+	}
+	else {
+		result = await fetchGet(config.url + "/block/since/" + since.toString());
+	}
+
+	return result.body;
+}
+
+async function queryBlockSinceCount(config, since, until) {
+	if (typeof (since) !== "number" || (until && typeof (until) !== "number")) {
+		throw new Error("Invalid type");
+	}
+	let result;
+	if (until) {
+		result = await fetchGet(config.url + "/block/since/" + since.toString() + "/until/" + until.toString() + "/count");
+	}
+	else {
+		result = await fetchGet(config.url + "/block/since/" + since.toString() + "/count");
+	}
+
+	return parseInt(result.body.blockCount, 10);
+}
+
+async function queryBlockTransactions(config, round) {
+	if (typeof (round) !== "number" && typeof (round) !== "string") {
+		throw new Error("Invalid type");
+	}
+	const result = await fetchGet(config.url + "/block/" + round.toString() + "/transactions");
 
 	return result.body;
 }
@@ -52,5 +82,7 @@ module.exports = {
 	queryBlock,
 	queryLatestBlock,
 	queryBlockFromInterval,
-	queryBlockSince
+	queryBlockSince,
+	queryBlockSinceCount,
+	queryBlockTransactions
 };

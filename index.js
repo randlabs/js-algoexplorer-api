@@ -1,6 +1,7 @@
 /* eslint-disable func-style */
 const { mainnet, testnet, betanet } = require("./src/http/networks");
-const { blockCount, queryBlock, queryLatestBlock, queryBlockFromInterval, queryBlockSince } = require("./src/block");
+const { blockCount, queryBlock, queryLatestBlock, queryBlockFromInterval, queryBlockSince,
+	queryBlockSinceCount, queryBlockTransactions } = require("./src/block");
 
 // eslint-disable-next-line valid-jsdoc
 /**
@@ -58,12 +59,31 @@ const AlgoexplorerApi = function(networkName) {
 	};
 
 	/**
-	 * @param {number} since The earliest timestamp of the sought blocks
+	 * @param {number} since The starting UTC timestamp (inclusive)
+	 * @param {number} [until] The ending UTC timestamp (inclusive)
 	 * @return {Promise<Array>} Returns the latest blocks since the specified timestamp
 	 */
-	this.queryBlockSince = function(since) {
-		return queryBlockSince(this._config, since);
+	this.queryBlockSince = function(since, until) {
+		return queryBlockSince(this._config, since, until);
 	};
+
+	/**
+	 * @param {number} since The starting UTC timestamp (inclusive)
+	 * @param {number} [until] The ending UTC timestamp (inclusive)
+	 * @return {Promise<number>} Returns the amount of blocks between the specified timestamps
+	 */
+	this.queryBlockSinceCount = function(since, until) {
+		return queryBlockSinceCount(this._config, since, until);
+	};
+
+	/**
+	* @param {(number|string)} round A block number or block hash
+	* @return {Promise<Array>}  Returns the transactions of the specified block
+	*/
+	this.queryBlockTransactions = function(round) {
+		return queryBlockTransactions(this._config, round);
+	};
+
 };
 
 module.exports = AlgoexplorerApi;
