@@ -3,7 +3,7 @@ const { fetchGet } = require("./http/request");
 async function blockCount(config) {
 	const result = await fetchGet(config.url + "/block/count");
 
-	return parseInt(result.body.blockCount, 10);
+	return result.body.blockCount;
 }
 
 async function queryBlock(config, round) {
@@ -27,7 +27,7 @@ async function queryLatestBlock(config, count) {
 }
 
 async function queryBlockFromInterval(config, from, to) {
-	if (typeof (from) !== "number" || typeof (to) !== "number") {
+	if (typeof (from) !== "number" || typeof (to) !== "number" || (to - from) < 0) {
 		throw new Error("Invalid type");
 	}
 	if ((to - from) > 100) {
@@ -39,7 +39,7 @@ async function queryBlockFromInterval(config, from, to) {
 }
 
 async function queryBlockSince(config, since, until) {
-	if (typeof (since) !== "number" || (until && typeof (until) !== "number")) {
+	if (typeof (since) !== "number" || (until && typeof (until) !== "number") || (until - since) < 0) {
 		throw new Error("Invalid type");
 	}
 	let result;
@@ -54,7 +54,7 @@ async function queryBlockSince(config, since, until) {
 }
 
 async function queryBlockSinceCount(config, since, until) {
-	if (typeof (since) !== "number" || (until && typeof (until) !== "number")) {
+	if (typeof (since) !== "number" || (until && typeof (until) !== "number") || (until - since) < 0) {
 		throw new Error("Invalid type");
 	}
 	let result;
@@ -65,7 +65,7 @@ async function queryBlockSinceCount(config, since, until) {
 		result = await fetchGet(config.url + "/block/since/" + since.toString() + "/count");
 	}
 
-	return parseInt(result.body.blockCount, 10);
+	return result.body.blockCount;
 }
 
 async function queryBlockTransactions(config, round) {
