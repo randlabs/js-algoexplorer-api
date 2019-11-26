@@ -6,7 +6,8 @@ const { stats, getGreatestAddressBalanceLastBlock, getGreatestAddressBalanceInte
 	getLastStakeAddress } = require("./src/statistics");
 const { queryAddress, queryAddressTransactions, queryAddressTransactionsFromInterval,
 	queryAddressTransactionsSince, queryAddressTransactionsSinceCount } = require("./src/account");
-const { queryTransactionCount, queryTransaction, queryLatestTransaction, queryTransactionFromInterval } = require("./src/transaction");
+const { queryTransactionsCount, queryTransactions, queryLatestTransactions, queryTransactionsFromInterval,
+	queryTransactionsSince, queryTransactionsSinceCount } = require("./src/transaction");
 // eslint-disable-next-line valid-jsdoc
 /**
 * @param {string} [networkName] - Network name (mainnet, testnet, betanet)
@@ -168,24 +169,24 @@ const AlgoexplorerApi = function(networkName) {
 	/**
 	 * @return {Promise<number>} Returns the amount of available transactions
 	 */
-	this.queryTransactionCount = function() {
-		return queryTransactionCount(this._config);
+	this.queryTransactionsCount = function() {
+		return queryTransactionsCount(this._config);
 	};
 
 	/**
 	 * @param {(string|number)} id Index number or txid string to query
 	 * @return {Promise<object>} Returns the transaction based on the specified index or txid
 	 */
-	this.queryTransaction = function(id) {
-		return queryTransaction(this._config, id);
+	this.queryTransactions = function(id) {
+		return queryTransactions(this._config, id);
 	};
 
 	/**
 	 * @param {number} count Amount of transactions to return between 1 and 100
 	 * @return {Promise<Array>} Returns the latest transactions
 	 */
-	this.queryLatestTransaction = function(count) {
-		return queryLatestTransaction(this._config, count);
+	this.queryLatestTransactions = function(count) {
+		return queryLatestTransactions(this._config, count);
 	};
 
 	/**
@@ -193,8 +194,26 @@ const AlgoexplorerApi = function(networkName) {
 	 * @param {number} to The ending index number (inclusive)
 	 * @return {Promise<Array>} Returns the transactions between the specified indexes
 	 */
-	this.queryTransactionFromInterval = function(from, to) {
-		return queryTransactionFromInterval(this._config, from, to);
+	this.queryTransactionsFromInterval = function(from, to) {
+		return queryTransactionsFromInterval(this._config, from, to);
+	};
+
+	/**
+	 * @param {number} since The starting UTC timestamp (inclusive)
+	 * @param {number} [until] The ending UTC timestamp (inclusive)
+	 * @return {Promise<Array>} Returns the transactions in a date range
+	 */
+	this.queryTransactionsSince = function(since, until) {
+		return queryTransactionsSince(this._config, since, until);
+	};
+
+	/**
+	 * @param {number} since The starting UTC timestamp (inclusive)
+	 * @param {number} [until] The ending UTC timestamp (inclusive)
+	 * @return {Promise<number>} Returns the amount of transactions between the specified UTC timestamps
+	 */
+	this.queryTransactionsSinceCount = function(since, until) {
+		return queryTransactionsSinceCount(this._config, since, until);
 	};
 };
 
