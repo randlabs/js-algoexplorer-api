@@ -7,7 +7,7 @@ async function blockCount(config) {
 }
 
 async function queryBlock(config, round) {
-	if (typeof (round) !== "number" && typeof (round) !== "string") {
+	if ((typeof (round) !== "number" && typeof (round) !== "string") || (typeof (round) === "number" && round < 0)) {
 		throw new Error("Invalid type");
 	}
 	const result = await fetchGet(config.url + "/block/" + round.toString());
@@ -17,7 +17,7 @@ async function queryBlock(config, round) {
 
 async function queryLatestBlock(config, count) {
 	let result;
-	if (typeof (count) !== "number") {
+	if (typeof (count) !== "number" || (count < 0)) {
 		throw new Error("Invalid type");
 	}
 	result = await fetchGet(config.url + "/block/latest/" + count.toString());
@@ -27,7 +27,8 @@ async function queryLatestBlock(config, count) {
 }
 
 async function queryBlockFromInterval(config, from, to) {
-	if (typeof (from) !== "number" || typeof (to) !== "number" || (to - from) < 0) {
+	if (typeof (from) !== "number" || typeof (to) !== "number" ||
+	 (to - from) < 0 || to < 0 || from < 0) {
 		throw new Error("Invalid type");
 	}
 	if ((to - from) > 100) {
@@ -39,7 +40,8 @@ async function queryBlockFromInterval(config, from, to) {
 }
 
 async function queryBlockSince(config, since, until) {
-	if (typeof (since) !== "number" || (until && typeof (until) !== "number") || (until - since) < 0) {
+	if (typeof (since) !== "number" || (until && typeof (until) !== "number") ||
+	(until && (until - since) < 0) || since < 0 || (until && until < 0)) {
 		throw new Error("Invalid type");
 	}
 	let result;
@@ -54,7 +56,8 @@ async function queryBlockSince(config, since, until) {
 }
 
 async function queryBlockSinceCount(config, since, until) {
-	if (typeof (since) !== "number" || (until && typeof (until) !== "number") || (until - since) < 0) {
+	if (typeof (since) !== "number" || (until && typeof (until) !== "number") ||
+	(until && (until - since) < 0) || since < 0 || (until && until < 0)) {
 		throw new Error("Invalid type");
 	}
 	let result;
@@ -69,7 +72,7 @@ async function queryBlockSinceCount(config, since, until) {
 }
 
 async function queryBlockTransactions(config, round) {
-	if (typeof (round) !== "number" && typeof (round) !== "string") {
+	if ((typeof (round) !== "number" && typeof (round) !== "string") || (typeof (round) === "number" && round < 0)) {
 		throw new Error("Invalid type");
 	}
 	const result = await fetchGet(config.url + "/block/" + round.toString() + "/transactions");
