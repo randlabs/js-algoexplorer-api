@@ -17,7 +17,7 @@ async function queryBlock(config, round) {
 
 async function queryLatestBlock(config, count) {
 	let result;
-	if (typeof (count) !== "number" || (count < 0)) {
+	if (typeof (count) !== "number" || (count < 0) || count > 100) {
 		throw new Error("Invalid type");
 	}
 	result = await fetchGet(config.url + "/block/latest/" + count.toString());
@@ -27,7 +27,7 @@ async function queryLatestBlock(config, count) {
 }
 
 async function queryBlockFromInterval(config, from, to) {
-	if (typeof (from) !== "number" || typeof (to) !== "number" || (to - from) < 0 || to < 0 || from < 1) {
+	if (typeof (from) !== "number" || typeof (to) !== "number" || (to - from) < 0 || to < 1 || from < 0 || (to - from + 1 > 100)) {
 		throw new Error("Invalid type");
 	}
 	if ((to - from) > 100) {
