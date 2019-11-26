@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/randlabs/js-algoexplorer-api#readme",
   "dependencies": {
+    "algosdk": "^1.4.0",
     "browserify": "^16.5.0",
     "chai": "^4.2.0",
     "minify": "^4.1.3",
