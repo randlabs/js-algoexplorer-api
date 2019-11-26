@@ -4,7 +4,8 @@ const { blockCount, queryBlock, queryLatestBlock, queryBlockFromInterval, queryB
 	queryBlockSinceCount, queryBlockTransactions } = require("./src/block");
 const { stats, getGreatestAddressBalanceLastBlock, getGreatestAddressBalanceInterval,
 	getLastStakeAddress } = require("./src/statistics");
-const { queryAddress, queryAddressTransactions } = require("./src/account");
+const { queryAddress, queryAddressTransactions, queryAddressTransactionsFromInterval,
+	queryAddressTransactionsSince, queryAddressTransactionsSinceCount } = require("./src/account");
 
 // eslint-disable-next-line valid-jsdoc
 /**
@@ -132,6 +133,36 @@ const AlgoexplorerApi = function(networkName) {
 	 */
 	this.queryAddressTransactions = function (address, count) {
 		return queryAddressTransactions(this._config, address, count);
+	};
+
+	/**
+	 * @param {string} address Address of the account to query
+	 * @param {number} from The starting index number (inclusive)
+	 * @param {number} to The ending index number (inclusive)
+	 * @return {Promise<Array>} Returns the transactions between the specified indexes of the specified account
+	 */
+	this.queryAddressTransactionsFromInterval = function(address, from, to) {
+		return queryAddressTransactionsFromInterval(this._config, address, from, to);
+	};
+
+	/**
+	 * @param {string} address Address of the account to query
+	 * @param {number} since The starting UTC timestamp (inclusive)
+	 * @param {number} [until] The ending UTC timestamp (inclusive)
+	 * @return {Promise<Array>} Returns the transactions of the specified account since the specified interval of time
+	 */
+	this.queryAddressTransactionsSince = function(address, since, until) {
+		return queryAddressTransactionsSince(this._config, address, since, until);
+	};
+
+	/**
+	 * @param {string} address Address of the account to query
+	 * @param {number} since The starting UTC timestamp (inclusive)
+	 * @param {number} [until] The ending UTC timestamp (inclusive)
+	 * @return {Promise<number>} Returns the amount of transactions of the specified account since the specified interval of time
+	 */
+	this.queryAddressTransactionsSinceCount = function(address, since, until) {
+		return queryAddressTransactionsSinceCount(this._config, address, since, until);
 	};
 
 };

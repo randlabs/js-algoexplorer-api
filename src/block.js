@@ -27,8 +27,7 @@ async function queryLatestBlock(config, count) {
 }
 
 async function queryBlockFromInterval(config, from, to) {
-	if (typeof (from) !== "number" || typeof (to) !== "number" ||
-	 (to - from) < 0 || to < 0 || from < 0) {
+	if (typeof (from) !== "number" || typeof (to) !== "number" || (to - from) < 0 || to < 0 || from < 1) {
 		throw new Error("Invalid type");
 	}
 	if ((to - from) > 100) {
@@ -41,7 +40,7 @@ async function queryBlockFromInterval(config, from, to) {
 
 async function queryBlockSince(config, since, until) {
 	if (typeof (since) !== "number" || (until && typeof (until) !== "number") ||
-	(until && (until - since) < 0) || since < 0 || (until && until < 0)) {
+	(until && (until - since) < 0) || since < 0 || (until && until < 1)) {
 		throw new Error("Invalid type");
 	}
 	let result;
@@ -57,7 +56,7 @@ async function queryBlockSince(config, since, until) {
 
 async function queryBlockSinceCount(config, since, until) {
 	if (typeof (since) !== "number" || (until && typeof (until) !== "number") ||
-	(until && (until - since) < 0) || since < 0 || (until && until < 0)) {
+	(until && (until - since) < 0) || since < 0 || (until && until < 1)) {
 		throw new Error("Invalid type");
 	}
 	let result;
