@@ -31,7 +31,7 @@ async function queryAddressTransactionsFromInterval(config, address, from, to) {
 
 async function queryAddressTransactionsSince(config, address, since, until) {
 	if (!algosdk.isValidAddress(address) || typeof (since) !== "number" || since < 0 || (until && typeof (until) !== "number") ||
-	(until && until < 1) || (until && (until < since) < 0)) {
+	(until && until < 1) || (until && (until - since) < 0)) {
 		throw new Error("Invalid type");
 	}
 	let result;
@@ -48,7 +48,7 @@ async function queryAddressTransactionsSince(config, address, since, until) {
 
 async function queryAddressTransactionsSinceCount(config, address, since, until) {
 	if (!algosdk.isValidAddress(address) || typeof (since) !== "number" || since < 0 || (until && typeof (until) !== "number") ||
-	(until && until < 1) || (until && (until < since) < 0)) {
+	(until && until < 1) || (until && (until - since) < 0)) {
 		throw new Error("Invalid type");
 	}
 	let result;
