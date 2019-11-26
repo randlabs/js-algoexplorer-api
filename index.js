@@ -6,7 +6,7 @@ const { stats, getGreatestAddressBalanceLastBlock, getGreatestAddressBalanceInte
 	getLastStakeAddress } = require("./src/statistics");
 const { queryAddress, queryAddressTransactions, queryAddressTransactionsFromInterval,
 	queryAddressTransactionsSince, queryAddressTransactionsSinceCount } = require("./src/account");
-
+const { queryTransactionCount, queryTransaction, queryLatestTransaction, queryTransactionFromInterval } = require("./src/transaction");
 // eslint-disable-next-line valid-jsdoc
 /**
 * @param {string} [networkName] - Network name (mainnet, testnet, betanet)
@@ -165,6 +165,37 @@ const AlgoexplorerApi = function(networkName) {
 		return queryAddressTransactionsSinceCount(this._config, address, since, until);
 	};
 
+	/**
+	 * @return {Promise<number>} Returns the amount of available transactions
+	 */
+	this.queryTransactionCount = function() {
+		return queryTransactionCount(this._config);
+	};
+
+	/**
+	 * @param {(string|number)} id Index number or txid string to query
+	 * @return {Promise<object>} Returns the transaction based on the specified index or txid
+	 */
+	this.queryTransaction = function(id) {
+		return queryTransaction(this._config, id);
+	};
+
+	/**
+	 * @param {number} count Amount of transactions to return between 1 and 100
+	 * @return {Promise<Array>} Returns the latest transactions
+	 */
+	this.queryLatestTransaction = function(count) {
+		return queryLatestTransaction(this._config, count);
+	};
+
+	/**
+	 * @param {number} from The starting index number (inclusive)
+	 * @param {number} to The ending index number (inclusive)
+	 * @return {Promise<Array>} Returns the transactions between the specified indexes
+	 */
+	this.queryTransactionFromInterval = function(from, to) {
+		return queryTransactionFromInterval(this._config, from, to);
+	};
 };
 
 module.exports = AlgoexplorerApi;
