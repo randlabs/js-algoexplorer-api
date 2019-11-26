@@ -21,7 +21,7 @@ async function queryAddressTransactions(config, address, count) {
 
 async function queryAddressTransactionsFromInterval(config, address, from, to) {
 	if (!algosdk.isValidAddress(address) || typeof (from) !== "number" || typeof (to) !== "number" ||
-	(to - from) < 0 || to < 0 || from < 1) {
+	(to - from) < 0 || to < 1 || from < 0 || (to - from + 1 > 100)) {
 		throw new Error("Invalid type");
 	}
 	const result = await fetchGet(config.url + "/account/" + address + "/transactions/from/" + from.toString() + "/to/" + to.toString());
