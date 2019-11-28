@@ -7,7 +7,7 @@
     "test": "tests"
   },
   "scripts": {
-    "test": "",
+    "test": "./node_modules/mocha/bin/mocha test",
     "build": "./node_modules/browserify/bin/cmd.js index.js -s AlgoexplorerAPI | ./node_modules/minify/bin/minify.js --js > dist/algoexplorerapi.min.js"
   },
   "repository": {
