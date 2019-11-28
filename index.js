@@ -8,6 +8,8 @@ const { queryAddress, queryAddressTransactions, queryAddressTransactionsFromInte
 	queryAddressTransactionsSince, queryAddressTransactionsSinceCount } = require("./src/account");
 const { queryTransactionsCount, queryTransactions, queryLatestTransactions, queryTransactionsFromInterval,
 	queryTransactionsSince, queryTransactionsSinceCount } = require("./src/transaction");
+const { status, sendTransaction } = require("./src/node");
+
 // eslint-disable-next-line valid-jsdoc
 /**
 * @param {string} [networkName] - Network name (mainnet, testnet, betanet)
@@ -90,6 +92,13 @@ const AlgoexplorerApi = function(networkName) {
 	};
 
 	/**
+	 * @return {Promise<object>} Returns detailed statistics about the blockchain
+	 */
+	this.status = function() {
+		return status(this._config);
+	};
+
+	/**
 	 * @return {Promise<object>} Returns statistics about the blockchain
 	 */
 	this.stats = function() {
@@ -106,7 +115,7 @@ const AlgoexplorerApi = function(networkName) {
 	/**
 	 * @param {number} since Timestamp of the first day
 	 * @param {number} until Timestamp of the last day
-	 * @return {Promise<object>} Returns addresses with greatest balance in a range of days.
+	 * @return {Promise<object>} Returns addresses with greatest balance in a range of days
 	 */
 	this.getGreatestAddressBalanceInterval = function(since, until) {
 		return getGreatestAddressBalanceInterval(this._config, since, until);
@@ -214,6 +223,14 @@ const AlgoexplorerApi = function(networkName) {
 	 */
 	this.queryTransactionsSinceCount = function(since, until) {
 		return queryTransactionsSinceCount(this._config, since, until);
+	};
+
+	/**
+	 * @param {string} hexa R
+	 * @return {Promise<object>} H
+	 */
+	this.sendTransaction = function(hexa) {
+		return sendTransaction(this._config, hexa);
 	};
 };
 
