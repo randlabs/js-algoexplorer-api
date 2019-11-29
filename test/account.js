@@ -32,7 +32,7 @@ describe("Account operations", function() {
 			done(err);
 		});
 	});
-	it("It should get adress transacctions by a date", function(done) {
+	it("It should query address transacctions by a date", function(done) {
 		const since = new Date().getTime() / 1000;
 		client.queryAddressTransactionsSince("FFJZOPQCYSRZISSJF33MBQJGGTIB2JFUEGBJIY6GXRWEU23ONC65GUZXHM", since)
 		.then(() => {
@@ -42,7 +42,7 @@ describe("Account operations", function() {
 			done(err);
 		});
 	});
-	it("It should get address transactions by a date interval", function(done) {
+	it("It should query address transactions by a date interval", function(done) {
 		const until = new Date().getTime() / 1000;
 		const since = until - 1000;
 		client.queryAddressTransactionsSince("FFJZOPQCYSRZISSJF33MBQJGGTIB2JFUEGBJIY6GXRWEU23ONC65GUZXHM", since, until)
@@ -53,7 +53,7 @@ describe("Account operations", function() {
 			done(err);
 		});
 	});
-	it("It should get adress transacctions count by a date", function(done) {
+	it("It should query address transacctions count by a date", function(done) {
 		const since = new Date().getTime() / 1000;
 		client.queryAddressTransactionsSinceCount("FFJZOPQCYSRZISSJF33MBQJGGTIB2JFUEGBJIY6GXRWEU23ONC65GUZXHM", since)
 		.then(() => {
@@ -63,7 +63,7 @@ describe("Account operations", function() {
 			done(err);
 		});
 	});
-	it("It should get adress transacctions count by a date interval", function(done) {
+	it("It should query address transacctions count by a date interval", function(done) {
 		const until = new Date().getTime() / 1000;
 		const since = until - 1000;
 		client.queryAddressTransactionsSinceCount("FFJZOPQCYSRZISSJF33MBQJGGTIB2JFUEGBJIY6GXRWEU23ONC65GUZXHM", since, until)

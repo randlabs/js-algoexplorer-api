@@ -23,7 +23,7 @@ describe("Block operations", function() {
 			done(err);
 		});
 	});
-	it("It should get block count", function(done) {
+	it("It should query block count", function(done) {
 		client.blockCount()
 		.then(() => {
 			done();
@@ -32,7 +32,7 @@ describe("Block operations", function() {
 			done(err);
 		});
 	});
-	it("It should get a block by a date", function(done) {
+	it("It should query a block by a date", function(done) {
 		const since = new Date().getTime() / 1000;
 		client.queryBlockSince(since)
 		.then(() => {
@@ -42,7 +42,7 @@ describe("Block operations", function() {
 			done(err);
 		});
 	});
-	it("It should get a block by a date interval", function(done) {
+	it("It should query a block by a date interval", function(done) {
 		const until = new Date().getTime() / 1000;
 		const since = until - 100;
 		client.queryBlockSince(since, until)
@@ -62,7 +62,7 @@ describe("Block operations", function() {
 			done(err);
 		});
 	});
-	it("It should get the block count by a date", function(done) {
+	it("It should query the block count by a date", function(done) {
 		const since = new Date().getTime() / 1000;
 		client.queryBlockSinceCount(since)
 		.then(() => {
@@ -72,7 +72,7 @@ describe("Block operations", function() {
 			done(err);
 		});
 	});
-	it("It should get the block count by a date interval", function(done) {
+	it("It should query the block count by a date interval", function(done) {
 		const until = new Date().getTime() / 1000;
 		const since = until - 100;
 		client.queryBlockSinceCount(since, until)
@@ -83,7 +83,7 @@ describe("Block operations", function() {
 			done(err);
 		});
 	});
-	it("It should get transactions of a specific block by round number", function(done) {
+	it("It should query transactions of a specific block by round number", function(done) {
 		client.queryBlockTransactions(3636)
 		.then(() => {
 			done();
@@ -92,7 +92,7 @@ describe("Block operations", function() {
 			done(err);
 		});
 	});
-	it("It should get transactions of a specific block by round hash", function(done) {
+	it("It should query transactions of a specific block by round hash", function(done) {
 		client.queryBlockTransactions("7MGM3IVHZV4GJTB2Z2Q5DWBNPGFWNJAGQJJRUNNKQ7COUAVE6SDA")
 		.then(() => {
 			done();
