@@ -17,7 +17,7 @@ async function queryBlock(config, round) {
 
 async function queryLatestBlock(config, count) {
 	let result;
-	if (typeof (count) !== "number" || (count < 0) || count > 100) {
+	if (typeof (count) !== "number" || (count < 1) || count > 100) {
 		throw new Error("Invalid type");
 	}
 	result = await fetchGet(config.url + "/block/latest/" + count.toString());

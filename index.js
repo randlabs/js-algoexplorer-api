@@ -15,6 +15,11 @@ const { status, sendTransaction } = require("./src/node");
 * @param {string} [networkName] - Network name (mainnet, testnet, betanet)
 */
 const AlgoexplorerApi = function(networkName) {
+
+	if (!this) {
+		throw new Error('You need to instantiate using the "new" keyword');
+	}
+
 	if (networkName) {
 		if (networkName === "mainnet") {
 			this._config = mainnet;
@@ -32,6 +37,20 @@ const AlgoexplorerApi = function(networkName) {
 	else {
 		this._config = mainnet;
 	}
+
+	/**
+	 * @return {string} Return the genesis ID
+	 */
+	this.getGenesisId = function() {
+		return this._config.id;
+	};
+
+	/**
+	 * @return {string} Return the genesis Hash
+	 */
+	this.getGenesisHash = function() {
+		return this._config.genesis;
+	};
 
 	/**
 	 * @return {Promise<number>} Returns the amount of available blocks
