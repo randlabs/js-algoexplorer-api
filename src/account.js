@@ -41,14 +41,14 @@ async function queryAddressTransactionsSince(config, address, since, until) {
 	if (!algosdk.isValidAddress(address)) {
 		throw new Error("Invalid address");
 	}
-	const date = (new Date().getTime() / 1000) + 1200;
+	const date = (new Date().getTime() / 1000) + 60;
 	if (typeof (since) !== "number" || (until && typeof (until) !== "number")) {
 		throw new Error("Invalid arguments, must be a positive integers");
 	}
 	if (since < 1546300800 || since > date) {
 		throw new Error("Invalid date");
 	}
-	if (until && until < since) {
+	if (until && (until < since || until > date)) {
 		throw new Error("Invalid arguments, UNTIL must be greater than SINCE");
 	}
 	let result;
@@ -67,14 +67,14 @@ async function queryAddressTransactionsSinceCount(config, address, since, until)
 	if (!algosdk.isValidAddress(address)) {
 		throw new Error("Invalid address");
 	}
-	const date = (new Date().getTime() / 1000) + 1200;
+	const date = (new Date().getTime() / 1000) + 60;
 	if (typeof (since) !== "number" || (until && typeof (until) !== "number")) {
 		throw new Error("Invalid arguments, must be a positive integers");
 	}
 	if (since < 1546300800 || since > date) {
 		throw new Error("Invalid date");
 	}
-	if (until && until < since) {
+	if (until && (until < since || until > date)) {
 		throw new Error("Invalid arguments, UNTIL must be greater than SINCE");
 	}
 	let result;
