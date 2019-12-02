@@ -3,7 +3,7 @@ const algosdk = require('algosdk');
 
 async function queryAddress(config, address) {
 	if (!algosdk.isValidAddress(address)) {
-		throw new Error("Invalid type");
+		throw new Error("Invalid address");
 	}
 	const result = await fetchGet(config.url + "/account/" + address);
 
@@ -11,8 +11,11 @@ async function queryAddress(config, address) {
 }
 
 async function queryAddressTransactions(config, address, count) {
-	if (!algosdk.isValidAddress(address) || typeof (count) !== "number" || count < 1) {
-		throw new Error("Invalid type");
+	if (!algosdk.isValidAddress(address)) {
+		throw new Error("Invalid address");
+	}
+	if (typeof (count) !== "number" || count < 1) {
+		throw new Error("Invalid argument, COUNT must be a positive integer greater than 1");
 	}
 	const result = await fetchGet(config.url + "/account/" + address + "/transactions/latest/" + count.toString());
 
@@ -20,9 +23,14 @@ async function queryAddressTransactions(config, address, count) {
 }
 
 async function queryAddressTransactionsFromInterval(config, address, from, to) {
-	if (!algosdk.isValidAddress(address) || typeof (from) !== "number" || typeof (to) !== "number" ||
-	(to - from) < 0 || to < 1 || from < 0 || (to - from + 1 > 100)) {
-		throw new Error("Invalid type");
+	if (!algosdk.isValidAddress(address)) {
+		throw new Error("Invalid address");
+	}
+	if (typeof (from) !== "number" || typeof (to) !== "number" || (to - from) < 0 || from < 0 || to < from) {
+		throw new Error("Invalid arguments, FROM and TO must be a positive integers, and TO must be greater than FROM");
+	}
+	if (to - from + 1 > 100) {
+		throw new Error("Max transactions to query is 100");
 	}
 	const result = await fetchGet(config.url + "/account/" + address + "/transactions/from/" + from.toString() + "/to/" + to.toString());
 
@@ -30,9 +38,18 @@ async function queryAddressTransactionsFromInterval(config, address, from, to) {
 }
 
 async function queryAddressTransactionsSince(config, address, since, until) {
-	if (!algosdk.isValidAddress(address) || typeof (since) !== "number" || since < 0 || (until && typeof (until) !== "number") ||
-	(until && until < 1) || (until && (until - since) < 0)) {
-		throw new Error("Invalid type");
+	if (!algosdk.isValidAddress(address)) {
+		throw new Error("Invalid address");
+	}
+	const date = (new Date().getTime() / 1000) + 1200;
+	if (typeof (since) !== "number" || (until && typeof (until) !== "number")) {
+		throw new Error("Invalid arguments, must be a positive integers");
+	}
+	if (since < 1546300800 || since > date) {
+		throw new Error("Invalid date");
+	}
+	if (until && until < since) {
+		throw new Error("Invalid arguments, UNTIL must be greater than SINCE");
 	}
 	let result;
 	let url = config.url + "/account/" + address + "/transactions/since/" + since.toString();
@@ -47,9 +64,18 @@ async function queryAddressTransactionsSince(config, address, since, until) {
 }
 
 async function queryAddressTransactionsSinceCount(config, address, since, until) {
-	if (!algosdk.isValidAddress(address) || typeof (since) !== "number" || since < 0 || (until && typeof (until) !== "number") ||
-	(until && until < 1) || (until && (until - since) < 0)) {
-		throw new Error("Invalid type");
+	if (!algosdk.isValidAddress(address)) {
+		throw new Error("Invalid address");
+	}
+	const date = (new Date().getTime() / 1000) + 1200;
+	if (typeof (since) !== "number" || (until && typeof (until) !== "number")) {
+		throw new Error("Invalid arguments, must be a positive integers");
+	}
+	if (since < 1546300800 || since > date) {
+		throw new Error("Invalid date");
+	}
+	if (until && until < since) {
+		throw new Error("Invalid arguments, UNTIL must be greater than SINCE");
 	}
 	let result;
 	let url = config.url + "/account/" + address + "/transactions/since/" + since.toString();
