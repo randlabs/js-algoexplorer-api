@@ -13,9 +13,15 @@ async function getGreatestAddressBalanceLastBlock(config) {
 }
 
 async function getGreatestAddressBalanceInterval(config, since, until) {
-	if (typeof (since) !== "number" || typeof (until) !== "number" ||
-	since < 0 || until < 0 || (until - since) < 0) {
-		throw new Error("Invalid type");
+	const date = (new Date().getTime() / 1000) + 1200;
+	if (typeof (since) !== "number" || (until && typeof (until) !== "number")) {
+		throw new Error("Invalid arguments, must be a positive integers");
+	}
+	if (since < 1546300800 || since > date) {
+		throw new Error("Invalid date");
+	}
+	if (until && until < since) {
+		throw new Error("Invalid arguments, UNTIL must be greater than SINCE");
 	}
 	const result = await fetchGet(config.url + "/stats/ranking/balance/since/" + since.toString() + "/until/" + until.toString());
 
