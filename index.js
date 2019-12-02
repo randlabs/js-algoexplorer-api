@@ -10,6 +10,7 @@ const { queryTransactionsCount, queryTransactions, queryLatestTransactions, quer
 	queryTransactionsSince, queryTransactionsSinceCount } = require("./src/transaction");
 const { status, sendTransaction } = require("./src/node");
 
+/// <reference path="typings/index.d.ts"/>
 // eslint-disable-next-line valid-jsdoc
 /**
 * @param {string} [networkName] - Network name (mainnet, testnet, betanet)
