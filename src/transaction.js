@@ -60,22 +60,22 @@ async function queryTransactionsByDate(config, options) {
 	let url = config.url + "/transaction/since/";
 	if (options.count) {
 		if (options.until) {
-			result = await fetchGet(url + options.since.toString() + "/until/" + options.until.toString());
-		}
-		else {
-			result = await fetchGet(url + options.since.toString());
-		}
-	}
-	else {
-		if (options.until) {
 			result = await fetchGet(url + options.since.toString() + "/until/" + options.until.toString() + "/count");
 		}
 		else {
 			result = await fetchGet(url + options.since.toString() + "/count");
 		}
+
+		return result.body.txCount;
+	}
+	if (options.until) {
+		result = await fetchGet(url + options.since.toString() + "/until/" + options.until.toString());
+	}
+	else {
+		result = await fetchGet(url + options.since.toString());
 	}
 
-	return result;
+	return result.body;
 }
 
 module.exports = {
