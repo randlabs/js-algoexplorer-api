@@ -37,24 +37,37 @@ async function queryAddressTransactionsFromInterval(config, address, from, to) {
 	return result.body;
 }
 
-async function queryAddressTransactionsSince(config, address, since, until) {
+async function queryAddressTransactionsByDate(config, address, options) {
 	if (!algosdk.isValidAddress(address)) {
 		throw new Error("Invalid address");
 	}
 	const date = (new Date().getTime() / 1000) + 60;
-	if (typeof (since) !== "number" || (until && typeof (until) !== "number")) {
-		throw new Error("Invalid arguments, must be a positive integers");
+	if (typeof (options.since) !== "number" || (options.until && typeof (options.until) !== "number")) {
+		throw new Error("Invalid arguments, the date must be a positive integer");
 	}
-	if (since < 1546300800 || since > date) {
+	if (options.since < 1546300800 || options.since > date) {
 		throw new Error("Invalid date");
 	}
-	if (until && (until < since || until > date)) {
+	if (options.until && (options.until < options.since || options.until > date)) {
 		throw new Error("Invalid arguments, UNTIL must be greater than SINCE");
 	}
+	if (options.count && typeof (options.count) !== "boolean") {
+		throw new Error("Invalid arguments, COUNT must be a boolean");
+	}
 	let result;
-	let url = config.url + "/account/" + address + "/transactions/since/" + since.toString();
-	if (until) {
-		result = await fetchGet(url + "/until/" + until.toString());
+	let url = config.url + "/account/" + address + "/transactions/since/" + options.since.toString();
+	if (options.count) {
+		if (options.until) {
+			result = await fetchGet(url + "/until/" + options.until.toString() + "/count");
+		}
+		else {
+			result = await fetchGet(url + "/count");
+		}
+
+		return result.body.txCount;
+	}
+	if (options.until) {
+		result = await fetchGet(url + "/until/" + options.until.toString());
 	}
 	else {
 		result = await fetchGet(url);
@@ -63,36 +76,9 @@ async function queryAddressTransactionsSince(config, address, since, until) {
 	return result.body;
 }
 
-async function queryAddressTransactionsSinceCount(config, address, since, until) {
-	if (!algosdk.isValidAddress(address)) {
-		throw new Error("Invalid address");
-	}
-	const date = (new Date().getTime() / 1000) + 60;
-	if (typeof (since) !== "number" || (until && typeof (until) !== "number")) {
-		throw new Error("Invalid arguments, must be a positive integers");
-	}
-	if (since < 1546300800 || since > date) {
-		throw new Error("Invalid date");
-	}
-	if (until && (until < since || until > date)) {
-		throw new Error("Invalid arguments, UNTIL must be greater than SINCE");
-	}
-	let result;
-	let url = config.url + "/account/" + address + "/transactions/since/" + since.toString();
-	if (until) {
-		result = await fetchGet(url + "/until/" + until.toString() + "/count");
-	}
-	else {
-		result = await fetchGet(url + "/count");
-	}
-
-	return result.body.txCount;
-}
-
 module.exports = {
 	queryAddress,
 	queryAddressTransactions,
 	queryAddressTransactionsFromInterval,
-	queryAddressTransactionsSince,
-	queryAddressTransactionsSinceCount
+	queryAddressTransactionsByDate
 };

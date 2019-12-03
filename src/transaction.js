@@ -57,22 +57,22 @@ async function queryTransactionsByDate(config, options) {
 		throw new Error("Invalid arguments, COUNT must be a boolean");
 	}
 	let result;
-	let url = config.url + "/transaction/since/";
+	let url = config.url + "/transaction/since/" + options.since.toString();
 	if (options.count) {
 		if (options.until) {
-			result = await fetchGet(url + options.since.toString() + "/until/" + options.until.toString() + "/count");
+			result = await fetchGet(url + "/until/" + options.until.toString() + "/count");
 		}
 		else {
-			result = await fetchGet(url + options.since.toString() + "/count");
+			result = await fetchGet(url + "/count");
 		}
 
 		return result.body.txCount;
 	}
 	if (options.until) {
-		result = await fetchGet(url + options.since.toString() + "/until/" + options.until.toString());
+		result = await fetchGet(url + "/until/" + options.until.toString());
 	}
 	else {
-		result = await fetchGet(url + options.since.toString());
+		result = await fetchGet(url);
 	}
 
 	return result.body;

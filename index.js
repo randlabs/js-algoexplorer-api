@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable func-style */
 const { mainnet, testnet, betanet } = require("./src/http/networks");
 const { blockCount, queryBlock, queryLatestBlock, queryBlockFromInterval, queryBlockSince,
@@ -5,9 +6,9 @@ const { blockCount, queryBlock, queryLatestBlock, queryBlockFromInterval, queryB
 const { stats, getGreatestAddressBalanceLastBlock, getGreatestAddressBalanceInterval,
 	getLastStakeAddress } = require("./src/statistics");
 const { queryAddress, queryAddressTransactions, queryAddressTransactionsFromInterval,
-	queryAddressTransactionsSince, queryAddressTransactionsSinceCount } = require("./src/account");
-const { queryTransactionsCount, queryTransactions, queryLatestTransactions, queryTransactionsFromInterval,
-	/*queryTransactionsSince, queryTransactionsSinceCount,*/ queryTransactionsByDate } = require("./src/transaction");
+	queryAddressTransactionsByDate } = require("./src/account");
+const { queryTransactionsCount, queryTransactions, queryLatestTransactions,
+	queryTransactionsFromInterval, queryTransactionsByDate } = require("./src/transaction");
 const { status, sendTransaction } = require("./src/node");
 
 /// <reference path="typings/index.d.ts"/>
@@ -177,22 +178,14 @@ const AlgoexplorerApi = function(networkName) {
 
 	/**
 	 * @param {string} address Address of the account to query
-	 * @param {number} since The starting UTC timestamp (inclusive)
-	 * @param {number} [until] The ending UTC timestamp (inclusive)
-	 * @return {Promise<Array>} Returns the transactions of the specified account since the specified interval of time
+	 * @param {object} options The option object
+	 * @param {number} options.since The starting UTC timestamp (inclusive)
+	 * @param {number} [options.until] The ending UTC timestamp (inclusive)
+	 * @param {boolean} [options.count] If its true, will return the amount of transactions, else, will return an array of transactions
+	 * @return {(Promise<Array>|Promise<number>)} Returns the amount of transactions or a transactions array of the specified account since the specified interval of time
 	 */
-	this.queryAddressTransactionsSince = function(address, since, until) {
-		return queryAddressTransactionsSince(this._config, address, since, until);
-	};
-
-	/**
-	 * @param {string} address Address of the account to query
-	 * @param {number} since The starting UTC timestamp (inclusive)
-	 * @param {number} [until] The ending UTC timestamp (inclusive)
-	 * @return {Promise<number>} Returns the amount of transactions of the specified account since the specified interval of time
-	 */
-	this.queryAddressTransactionsSinceCount = function(address, since, until) {
-		return queryAddressTransactionsSinceCount(this._config, address, since, until);
+	this.queryAddressTransactionsByDate = function(address, options) {
+		return queryAddressTransactionsByDate(this._config, address, options);
 	};
 
 	/**
@@ -232,7 +225,7 @@ const AlgoexplorerApi = function(networkName) {
 	 * @param {number} options.since The starting UTC timestamp (inclusive)
 	 * @param {number} [options.until] The ending UTC timestamp (inclusive)
 	 * @param {boolean} [options.count] If its true, will return the amount of transactions, else, will return an array of transactions
-	 * @return {(Promise<Array>|Promise<number>)} Returns the transactions or the amount of transactions in a date range
+	 * @return {(Promise<Array>|Promise<number>)} Returns the amount of transactions or a transactions array between the specified UTC timestamps
 	 */
 	this.queryTransactionsByDate = function(options) {
 		return queryTransactionsByDate(this._config, options);
