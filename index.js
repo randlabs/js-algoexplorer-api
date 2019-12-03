@@ -7,7 +7,7 @@ const { stats, getGreatestAddressBalanceLastBlock, getGreatestAddressBalanceInte
 const { queryAddress, queryAddressTransactions, queryAddressTransactionsFromInterval,
 	queryAddressTransactionsSince, queryAddressTransactionsSinceCount } = require("./src/account");
 const { queryTransactionsCount, queryTransactions, queryLatestTransactions, queryTransactionsFromInterval,
-	queryTransactionsSince, queryTransactionsSinceCount } = require("./src/transaction");
+	/*queryTransactionsSince, queryTransactionsSinceCount,*/ queryTransactionsByDate } = require("./src/transaction");
 const { status, sendTransaction } = require("./src/node");
 
 /// <reference path="typings/index.d.ts"/>
@@ -228,21 +228,14 @@ const AlgoexplorerApi = function(networkName) {
 	};
 
 	/**
-	 * @param {number} since The starting UTC timestamp (inclusive)
-	 * @param {number} [until] The ending UTC timestamp (inclusive)
-	 * @return {Promise<Array>} Returns the transactions in a date range
+	 * @param {object} options The option object
+	 * @param {number} options.since The starting UTC timestamp (inclusive)
+	 * @param {number} [options.until] The ending UTC timestamp (inclusive)
+	 * @param {boolean} [options.count] If its true, will return the amount of transactions, else, will return an array of transactions
+	 * @return {(Promise<Array>|Promise<number>)} Returns the transactions or the amount of transactions in a date range
 	 */
-	this.queryTransactionsSince = function(since, until) {
-		return queryTransactionsSince(this._config, since, until);
-	};
-
-	/**
-	 * @param {number} since The starting UTC timestamp (inclusive)
-	 * @param {number} [until] The ending UTC timestamp (inclusive)
-	 * @return {Promise<number>} Returns the amount of transactions between the specified UTC timestamps
-	 */
-	this.queryTransactionsSinceCount = function(since, until) {
-		return queryTransactionsSinceCount(this._config, since, until);
+	this.queryTransactionsByDate = function(options) {
+		return queryTransactionsByDate(this._config, options);
 	};
 
 	/**

@@ -42,48 +42,40 @@ async function queryTransactionsFromInterval(config, from, to) {
 	return result.body;
 }
 
-async function queryTransactionsSince(config, since, until) {
+async function queryTransactionsByDate(config, options) {
 	const date = (new Date().getTime() / 1000) + 60;
-	if (typeof (since) !== "number" || (until && typeof (until) !== "number")) {
-		throw new Error("Invalid arguments, must be a positive integers");
+	if (typeof (options.since) !== "number" || (options.until && typeof (options.until) !== "number")) {
+		throw new Error("Invalid arguments, the date must be a positive integer");
 	}
-	if (since < 1546300800 || since > date) {
+	if (options.since < 1546300800 || options.since > date) {
 		throw new Error("Invalid date");
 	}
-	if (until && (until < since || until > date)) {
+	if (options.until && (options.until < options.since || options.until > date)) {
 		throw new Error("Invalid arguments, UNTIL must be greater than SINCE");
 	}
-	let result;
-	if (until) {
-		result = await fetchGet(config.url + "/transaction/since/" + since.toString() + "/until/" + until.toString());
-	}
-	else {
-		result = await fetchGet(config.url + "/transaction/since/" + since.toString());
-	}
-
-	return result.body;
-}
-
-async function queryTransactionsSinceCount(config, since, until) {
-	const date = (new Date().getTime() / 1000) + 60;
-	if (typeof (since) !== "number" || (until && typeof (until) !== "number")) {
-		throw new Error("Invalid arguments, must be a positive integers");
-	}
-	if (since < 1546300800 || since > date) {
-		throw new Error("Invalid date");
-	}
-	if (until && (until < since || until > date)) {
-		throw new Error("Invalid arguments, UNTIL must be greater than SINCE");
+	if (options.count && typeof (options.count) !== "boolean") {
+		throw new Error("Invalid arguments, COUNT must be a boolean");
 	}
 	let result;
-	if (until) {
-		result = await fetchGet(config.url + "/transaction/since/" + since.toString() + "/until/" + until.toString() + "/count");
+	let url = config.url + "/transaction/since/";
+	if (options.count) {
+		if (options.until) {
+			result = await fetchGet(url + options.since.toString() + "/until/" + options.until.toString());
+		}
+		else {
+			result = await fetchGet(url + options.since.toString());
+		}
 	}
 	else {
-		result = await fetchGet(config.url + "/transaction/since/" + since.toString() + "/count");
+		if (options.until) {
+			result = await fetchGet(url + options.since.toString() + "/until/" + options.until.toString() + "/count");
+		}
+		else {
+			result = await fetchGet(url + options.since.toString() + "/count");
+		}
 	}
 
-	return result.body.txCount;
+	return result;
 }
 
 module.exports = {
@@ -91,7 +83,6 @@ module.exports = {
 	queryTransactions,
 	queryLatestTransactions,
 	queryTransactionsFromInterval,
-	queryTransactionsSince,
-	queryTransactionsSinceCount
+	queryTransactionsByDate
 };
 
