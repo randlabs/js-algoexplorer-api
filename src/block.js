@@ -1,6 +1,6 @@
 const { fetchGet } = require("./http/request");
 
-async function blockCount(config) {
+async function blocksCount(config) {
 	const result = await fetchGet(config.url + "/block/count");
 
 	return result.body.blockCount;
@@ -15,7 +15,7 @@ async function queryBlock(config, round) {
 	return result.body;
 }
 
-async function queryLatestBlock(config, count) {
+async function queryLatestBlocks(config, count) {
 	let result;
 	if (typeof (count) !== "number" || (count < 1) || count > 100) {
 		throw new Error("Invalid argument, COUNT must be a positive integer between 1 and 100");
@@ -26,7 +26,7 @@ async function queryLatestBlock(config, count) {
 	return result.body;
 }
 
-async function queryBlockFromInterval(config, from, to) {
+async function queryBlocksFromInterval(config, from, to) {
 	if (typeof (from) !== "number" || typeof (to) !== "number" || (to - from) < 0 || from < 0 || to < from) {
 		throw new Error("Invalid arguments, FROM and TO must be a positive integers, and TO must be greater than FROM");
 	}
@@ -38,48 +38,39 @@ async function queryBlockFromInterval(config, from, to) {
 	return result.body;
 }
 
-async function queryBlockSince(config, since, until) {
+async function queryBlocksByDate(config, options) {
 	const date = (new Date().getTime() / 1000) + 60;
-	if (typeof (since) !== "number" || (until && typeof (until) !== "number")) {
-		throw new Error("Invalid arguments, must be a positive integers");
+	if (typeof (options.since) !== "number" || (options.until && typeof (options.until) !== "number")) {
+		throw new Error("Invalid arguments, the date must be a positive integer");
 	}
-	if (since < 1546300800 || since > date) {
+	if (options.since < 1546300800 || options.since > date) {
 		throw new Error("Invalid date");
 	}
-	if (until && (until < since || until > date)) {
+	if (options.until && (options.until < options.since || options.until > date)) {
 		throw new Error("Invalid arguments, UNTIL must be greater than SINCE");
 	}
+	if (options.count && typeof (options.count) !== "boolean") {
+		throw new Error("Invalid arguments, COUNT must be a boolean");
+	}
 	let result;
-	if (until) {
-		result = await fetchGet(config.url + "/block/since/" + since.toString() + "/until/" + until.toString());
+	let url = config.url + "/block/since/" + options.since.toString();
+	if (options.count) {
+		if (options.until) {
+			result = await fetchGet(url + "/until/" + options.until.toString() + "/count");
+		}
+		else {
+			result = await fetchGet(url + "/count");
+		}
+		return result.body.blockCount;
+	}
+	if (options.until) {
+		result = await fetchGet(url + "/until/" + options.until.toString());
 	}
 	else {
-		result = await fetchGet(config.url + "/block/since/" + since.toString());
+		result = await fetchGet(url);
 	}
 
 	return result.body;
-}
-
-async function queryBlockSinceCount(config, since, until) {
-	const date = (new Date().getTime() / 1000) + 60;
-	if (typeof (since) !== "number" || (until && typeof (until) !== "number")) {
-		throw new Error("Invalid arguments, must be a positive integers");
-	}
-	if (since < 1546300800 || since > date) {
-		throw new Error("Invalid date");
-	}
-	if (until && (until < since || until > date)) {
-		throw new Error("Invalid arguments, UNTIL must be greater than SINCE");
-	}
-	let result;
-	if (until) {
-		result = await fetchGet(config.url + "/block/since/" + since.toString() + "/until/" + until.toString() + "/count");
-	}
-	else {
-		result = await fetchGet(config.url + "/block/since/" + since.toString() + "/count");
-	}
-
-	return result.body.blockCount;
 }
 
 async function queryBlockTransactions(config, round) {
@@ -92,11 +83,10 @@ async function queryBlockTransactions(config, round) {
 }
 
 module.exports = {
-	blockCount,
+	blocksCount,
 	queryBlock,
-	queryLatestBlock,
-	queryBlockFromInterval,
-	queryBlockSince,
-	queryBlockSinceCount,
+	queryLatestBlocks,
+	queryBlocksFromInterval,
+	queryBlocksByDate,
 	queryBlockTransactions
 };
