@@ -18,8 +18,8 @@ describe("Node operations", function() {
 	});
 
 	it("It should send transaction", function(done) {
-		client.blockCount()
-		.then((blockCount) => {
+		client.blocksCount()
+		.then((blocksCount) => {
 			const mnemonic = "obtain extend cheap want ride fatal jungle reject field sell arm apology" +
 			" avocado grit ball enough rebuild false celery favorite cook soon talk abandon hope";
 			const keys = algosdk.mnemonicToSecretKey(mnemonic);
@@ -27,8 +27,8 @@ describe("Node operations", function() {
 				"to": keys.addr,
 				"fee": 1000,
 				"amount": 1000,
-				"firstRound": blockCount + 1,
-				"lastRound": blockCount + 10,
+				"firstRound": blocksCount + 1,
+				"lastRound": blocksCount + 10,
 				"genesisID": client.getGenesisId(),
 				"genesisHash": client.getGenesisHash()
 			};

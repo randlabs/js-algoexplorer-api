@@ -1,13 +1,14 @@
 const AlgoexplorerApi = require("../index");
+const expect = require("chai").expect;
+const client = new AlgoexplorerApi("testnet");
 
 describe("Account operations", function() {
 	// eslint-disable-next-line no-invalid-this
 	this.timeout(5000);
-	const client = new AlgoexplorerApi("testnet");
-
 	it("It should query transaction by a specified index", function(done) {
 		client.queryTransactions(6363)
-		.then(() => {
+		.then((res) => {
+			expect(res).to.be.a("object");
 			done();
 		})
 		.catch((err) => {
@@ -16,7 +17,8 @@ describe("Account operations", function() {
 	});
 	it("It should query transaction by a hash", function(done) {
 		client.queryTransactions("QT577XN4UFS755QN7WHYG6WDIQM4ZN7JRT3TTYHH4N2F4S2IJRBQ")
-		.then(() => {
+		.then((res) => {
+			expect(res).to.be.a("object");
 			done();
 		})
 		.catch((err) => {
@@ -25,7 +27,8 @@ describe("Account operations", function() {
 	});
 	it("It should query the total amount of available transactions", function(done) {
 		client.queryTransactionsCount()
-		.then(() => {
+		.then((res) => {
+			expect(res).to.be.a("number");
 			done();
 		})
 		.catch((err) => {
@@ -34,7 +37,8 @@ describe("Account operations", function() {
 	});
 	it("It should query transactions between the specified indexes", function(done) {
 		client.queryTransactionsFromInterval(999, 1009)
-		.then(() => {
+		.then((res) => {
+			expect(res).to.be.a("array");
 			done();
 		})
 		.catch((err) => {
@@ -44,7 +48,8 @@ describe("Account operations", function() {
 	it("It should query transactions by a date", function(done) {
 		const since = new Date().getTime() / 1000;
 		client.queryTransactionsByDate({ since })
-		.then(() => {
+		.then((res) => {
+			expect(res).to.be.a("array");
 			done();
 		})
 		.catch((err) => {
@@ -55,7 +60,8 @@ describe("Account operations", function() {
 		const until = new Date().getTime() / 1000;
 		const since = until - 100;
 		client.queryTransactionsByDate({ since, until })
-		.then(() => {
+		.then((res) => {
+			expect(res).to.be.a("array");
 			done();
 		})
 		.catch((err) => {
@@ -65,7 +71,8 @@ describe("Account operations", function() {
 	it("It should query transactions count by a date", function(done) {
 		const since = new Date().getTime() / 1000;
 		client.queryTransactionsByDate({ since, count: true })
-		.then(() => {
+		.then((res) => {
+			expect(res).to.be.a("number");
 			done();
 		})
 		.catch((err) => {
@@ -76,7 +83,8 @@ describe("Account operations", function() {
 		const until = new Date().getTime() / 1000;
 		const since = until - 100;
 		client.queryTransactionsByDate({ since, until, count: true })
-		.then(() => {
+		.then((res) => {
+			expect(res).to.be.a("number");
 			done();
 		})
 		.catch((err) => {
@@ -85,7 +93,8 @@ describe("Account operations", function() {
 	});
 	it("It should query the latest transactions", function(done) {
 		client.queryLatestTransactions(10)
-		.then(() => {
+		.then((res) => {
+			expect(res).to.be.a("array");
 			done();
 		})
 		.catch((err) => {

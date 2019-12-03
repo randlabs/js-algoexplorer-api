@@ -70,11 +70,11 @@ const AlgoexplorerApi = function(networkName) {
 	};
 
 	/**
-	 * @param {number} Amount Amount of blocks to return between 1 and 100
+	 * @param {number} amount Amount of blocks to return between 1 and 100
 	 * @return {Promise<Array>} Returns the latest blocks
 	 */
-	this.queryLatestBlocks = function (Amount) {
-		return queryLatestBlocks(this._config, Amount);
+	this.queryLatestBlocks = function (amount) {
+		return queryLatestBlocks(this._config, amount);
 	};
 
 	/**

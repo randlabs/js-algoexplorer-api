@@ -1,13 +1,14 @@
 const AlgoexplorerApi = require("../index");
+const expect = require("chai").expect;
+const client = new AlgoexplorerApi("testnet");
 
 describe("Account operations", function() {
 	// eslint-disable-next-line no-invalid-this
 	this.timeout(5000);
-	const client = new AlgoexplorerApi("testnet");
-
 	it("It should query address information", function(done) {
 		client.queryAddress("FFJZOPQCYSRZISSJF33MBQJGGTIB2JFUEGBJIY6GXRWEU23ONC65GUZXHM")
-		.then(() => {
+		.then((res) => {
+			expect(res).to.be.a("object");
 			done();
 		})
 		.catch((err) => {
@@ -16,7 +17,8 @@ describe("Account operations", function() {
 	});
 	it("It should query latest transactions of specified address", function(done) {
 		client.queryAddressTransactions("FFJZOPQCYSRZISSJF33MBQJGGTIB2JFUEGBJIY6GXRWEU23ONC65GUZXHM", 10)
-		.then(() => {
+		.then((res) => {
+			expect(res).to.be.a("array");
 			done();
 		})
 		.catch((err) => {
@@ -25,7 +27,8 @@ describe("Account operations", function() {
 	});
 	it("It should query address transactions between specified indexes", function(done) {
 		client.queryAddressTransactionsFromInterval("FFJZOPQCYSRZISSJF33MBQJGGTIB2JFUEGBJIY6GXRWEU23ONC65GUZXHM", 50, 55)
-		.then(() => {
+		.then((res) => {
+			expect(res).to.be.a("array");
 			done();
 		})
 		.catch((err) => {
@@ -35,7 +38,8 @@ describe("Account operations", function() {
 	it("It should query address transacctions by a date", function(done) {
 		const since = new Date().getTime() / 1000;
 		client.queryAddressTransactionsByDate("FFJZOPQCYSRZISSJF33MBQJGGTIB2JFUEGBJIY6GXRWEU23ONC65GUZXHM", { since })
-		.then(() => {
+		.then((res) => {
+			expect(res).to.be.a("array");
 			done();
 		})
 		.catch((err) => {
@@ -46,7 +50,8 @@ describe("Account operations", function() {
 		const until = new Date().getTime() / 1000;
 		const since = until - 1000;
 		client.queryAddressTransactionsByDate("FFJZOPQCYSRZISSJF33MBQJGGTIB2JFUEGBJIY6GXRWEU23ONC65GUZXHM", { since, until })
-		.then(() => {
+		.then((res) => {
+			expect(res).to.be.a("array");
 			done();
 		})
 		.catch((err) => {
@@ -56,7 +61,8 @@ describe("Account operations", function() {
 	it("It should query address transacctions count by a date", function(done) {
 		const since = new Date().getTime() / 1000;
 		client.queryAddressTransactionsByDate("FFJZOPQCYSRZISSJF33MBQJGGTIB2JFUEGBJIY6GXRWEU23ONC65GUZXHM", { since, count: true })
-		.then(() => {
+		.then((res) => {
+			expect(res).to.be.a("number");
 			done();
 		})
 		.catch((err) => {
@@ -67,7 +73,8 @@ describe("Account operations", function() {
 		const until = new Date().getTime() / 1000;
 		const since = until - 1000;
 		client.queryAddressTransactionsByDate("FFJZOPQCYSRZISSJF33MBQJGGTIB2JFUEGBJIY6GXRWEU23ONC65GUZXHM", { since, until, count: true })
-		.then(() => {
+		.then((res) => {
+			expect(res).to.be.a("number");
 			done();
 		})
 		.catch((err) => {
