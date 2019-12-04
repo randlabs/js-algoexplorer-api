@@ -119,28 +119,28 @@ const AlgoexplorerApi = function(networkName) {
 		return stats(this._config);
 	};
 
-	/**
-	 * @return {Promise<object>} Returns addresses with greatest balance in the last block
-	 */
-	this.getGreatestAddressBalanceLastBlock = function() {
-		return getGreatestAddressBalanceLastBlock(this._config);
-	};
+	// /**
+	//  * @return {Promise<object>} Returns addresses with greatest balance in the last block
+	//  */
+	// this.getGreatestAddressBalanceLastBlock = function() {
+	// 	return getGreatestAddressBalanceLastBlock(this._config);
+	// };
 
-	/**
-	 * @param {number} since Timestamp of the first day
-	 * @param {number} until Timestamp of the last day
-	 * @return {Promise<object>} Returns addresses with greatest balance in a range of days
-	 */
-	this.getGreatestAddressBalanceInterval = function(since, until) {
-		return getGreatestAddressBalanceInterval(this._config, since, until);
-	};
+	// /**
+	//  * @param {number} since Timestamp of the first day
+	//  * @param {number} until Timestamp of the last day
+	//  * @return {Promise<object>} Returns addresses with greatest balance in a range of days
+	//  */
+	// this.getGreatestAddressBalanceInterval = function(since, until) {
+	// 	return getGreatestAddressBalanceInterval(this._config, since, until);
+	// };
 
-	/**
-	 * @return {Promise<object>} Returns last known stake quantities and the groups that contain Not Participating Balance
-	 */
-	this.getLastStakeAddress = function() {
-		return getLastStakeAddress(this._config);
-	};
+	// /**
+	//  * @return {Promise<object>} Returns last known stake quantities and the groups that contain Not Participating Balance
+	//  */
+	// this.getLastStakeAddress = function() {
+	// 	return getLastStakeAddress(this._config);
+	// };
 
 	/**
 	 * @param {string} address Address of the account to query
