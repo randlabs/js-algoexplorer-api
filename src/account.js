@@ -26,10 +26,10 @@ async function queryAddressTransactionsFromInterval(config, address, from, to) {
 	if (!algosdk.isValidAddress(address)) {
 		throw new Error("Invalid address");
 	}
-	if (typeof (from) !== "number" || typeof (to) !== "number" || (to - from) < 0 || from < 0 || to < from) {
+	if (typeof (from) !== "number" || typeof (to) !== "number" || (to - from) < 1 || from < 0 || to < from) {
 		throw new Error("Invalid arguments, FROM and TO must be a positive integers, and TO must be greater than FROM");
 	}
-	if (to - from + 1 > 100) {
+	if (to - from > 100) {
 		throw new Error("Max transactions to query is 100");
 	}
 	const result = await fetchGet(config.url + "/account/" + address + "/transactions/from/" + from.toString() + "/to/" + to.toString());

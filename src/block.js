@@ -27,10 +27,10 @@ async function queryLatestBlocks(config, count) {
 }
 
 async function queryBlocksFromInterval(config, from, to) {
-	if (typeof (from) !== "number" || typeof (to) !== "number" || (to - from) < 0 || from < 0 || to < from) {
+	if (typeof (from) !== "number" || typeof (to) !== "number" || (to - from) < 1 || from < 0 || to < from) {
 		throw new Error("Invalid arguments, FROM and TO must be a positive integers, and TO must be greater than FROM");
 	}
-	if (to - from + 1 > 100) {
+	if (to - from > 100) {
 		throw new Error("Max blocks to query is 100");
 	}
 	const result = await fetchGet(config.url + "/block/from/" + from.toString() + "/to/" + to.toString());
@@ -75,7 +75,7 @@ async function queryBlocksByDate(config, options) {
 
 async function queryBlockTransactions(config, round) {
 	if ((typeof (round) !== "number" && typeof (round) !== "string") || (typeof (round) === "number" && round < 0)) {
-		throw new Error("Invalid argument, ROUND must be a positive integer");
+		throw new Error("Invalid argument, round must be a positive integer or a string hash");
 	}
 	const result = await fetchGet(config.url + "/block/" + round.toString() + "/transactions");
 
