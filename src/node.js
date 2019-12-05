@@ -8,7 +8,7 @@ async function sendTransaction(config, hexa) {
 	const body = { hexa: hexa };
 	const result = await fetchPost(config.url + "/sendraw", body);
 
-	return result.body;
+	return result.body.hash;
 }
 
 async function status(config) {

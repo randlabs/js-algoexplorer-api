@@ -225,8 +225,9 @@ const AlgoexplorerApi = function(networkName) {
 	};
 
 	/**
-	 * @param {string} hexa R
-	 * @return {Promise<object>} H
+	 * @description Sends a RAW transaction to the blockchain
+	 * @param {string} hexa The hexa string of the transaction
+	 * @return {Promise<string>} Resturns the transaction hash
 	 */
 	this.sendTransaction = function(hexa) {
 		return sendTransaction(this._config, hexa);
