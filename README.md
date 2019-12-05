@@ -1,6 +1,6 @@
 # js-algoexplorer-api
 
-Algoexplorer SDK is a javascript library for communicating with the Algoexplorer API. 
+Algoexplorer SDK is a javascript library for communicating with the Algoexplorer REST API. 
 
 ## Installation
 
@@ -59,11 +59,13 @@ const api = new AlgoexplorerAPI();
 
 #### Send transaction
 ```javascript
-client.blocksCount()
-.then((blocksCount) => {
+(async () => {
+    // Get blocks count
+    const blocksCount = await api.blocksCount();
     const mnemonic = "obtain extend cheap want ride fatal jungle reject field sell arm apology" +
     " avocado grit ball enough rebuild false celery favorite cook soon talk abandon hope";
     const keys = algosdk.mnemonicToSecretKey(mnemonic);
+    // Prepare transaction
     const txn = {
         "from": keys.addr,
         "to": "46QNIYQEMLKNOBTQC56UEBBHFNH37EWLHGT2KGL3ZGB4SW77W6V7GBKPDY",
@@ -77,15 +79,9 @@ client.blocksCount()
     };
     const signedTxn = algosdk.signTransaction(txn, keys.sk);
     const hexa = Buffer.from(signedTxn.blob).toString('hex');
-    client.sendTransaction(hexa)
-    .then(() => {
-        done();
-    })
-    .catch((err) => {
-        done(err);
-    });
-})
-.catch((err) => {
-    done(err);
+    // Send transaction
+    await api.sendTransaction(hexa);
+})().catch(e => {
+    console.log(e);
 });
 ```
