@@ -1,10 +1,7 @@
-/* eslint-disable max-len */
-/* eslint-disable func-style */
 const { mainnet, testnet, betanet } = require("./src/http/networks");
 const { queryBlocksCount, queryBlock, queryLatestBlocks, queryBlocksFromInterval,
 	queryBlocksByDate, queryBlockTransactions } = require("./src/block");
-const { queryStats, getGreatestAddressBalanceLastBlock, getGreatestAddressBalanceInterval,
-	getLastStakeAddress } = require("./src/statistics");
+const { queryStats } = require("./src/statistics");
 const { queryAddress, queryAddressTransactions, queryAddressTransactionsFromInterval,
 	queryAddressTransactionsByDate } = require("./src/account");
 const { queryTransactionsCount, queryTransactions, queryLatestTransactions,
@@ -12,7 +9,6 @@ const { queryTransactionsCount, queryTransactions, queryLatestTransactions,
 const { queryStatus, sendTransaction } = require("./src/node");
 
 /// <reference path="typings/index.d.ts"/>
-// eslint-disable-next-line valid-jsdoc
 /**
 * @param {string} [networkName] - Network name (mainnet, testnet, betanet)
 */
@@ -117,29 +113,6 @@ const AlgoexplorerApi = function(networkName) {
 	this.queryStats = function() {
 		return queryStats(this._config);
 	};
-
-	// /**
-	//  * @return {Promise<object>} Returns addresses with greatest balance in the last block
-	//  */
-	// this.getGreatestAddressBalanceLastBlock = function() {
-	// 	return getGreatestAddressBalanceLastBlock(this._config);
-	// };
-
-	// /**
-	//  * @param {number} since Timestamp of the first day
-	//  * @param {number} until Timestamp of the last day
-	//  * @return {Promise<object>} Returns addresses with greatest balance in a range of days
-	//  */
-	// this.getGreatestAddressBalanceInterval = function(since, until) {
-	// 	return getGreatestAddressBalanceInterval(this._config, since, until);
-	// };
-
-	// /**
-	//  * @return {Promise<object>} Returns last known stake quantities and the groups that contain Not Participating Balance
-	//  */
-	// this.getLastStakeAddress = function() {
-	// 	return getLastStakeAddress(this._config);
-	// };
 
 	/**
 	 * @param {string} address Address of the account to query

@@ -1,5 +1,3 @@
-/* eslint-disable require-unicode-regexp */
-
 function validateBase64String(base64) {
 	const regExp = /^([0-9a-zA-Z+/]{4})*(([0-9a-zA-Z+/]{2}==)|([0-9a-zA-Z+/]{3}=))?$/;
 
