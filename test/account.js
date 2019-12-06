@@ -37,7 +37,7 @@ describe("Account operations", function() {
 	});
 	it("It should query address transacctions by a date", function(done) {
 		const since = new Date().getTime() / 1000;
-		client.queryAddressTransactionsByDate("FFJZOPQCYSRZISSJF33MBQJGGTIB2JFUEGBJIY6GXRWEU23ONC65GUZXHM", { since })
+		client.queryAddressTransactionsByDate("FFJZOPQCYSRZISSJF33MBQJGGTIB2JFUEGBJIY6GXRWEU23ONC65GUZXHM", since)
 		.then((res) => {
 			expect(res).to.be.a("array");
 			done();
@@ -49,7 +49,7 @@ describe("Account operations", function() {
 	it("It should query address transactions by a date interval", function(done) {
 		const until = new Date().getTime() / 1000;
 		const since = until - 1000;
-		client.queryAddressTransactionsByDate("FFJZOPQCYSRZISSJF33MBQJGGTIB2JFUEGBJIY6GXRWEU23ONC65GUZXHM", { since, until })
+		client.queryAddressTransactionsByDate("FFJZOPQCYSRZISSJF33MBQJGGTIB2JFUEGBJIY6GXRWEU23ONC65GUZXHM", since, until)
 		.then((res) => {
 			expect(res).to.be.a("array");
 			done();
@@ -60,7 +60,7 @@ describe("Account operations", function() {
 	});
 	it("It should query address transacctions count by a date", function(done) {
 		const since = new Date().getTime() / 1000;
-		client.queryAddressTransactionsByDate("FFJZOPQCYSRZISSJF33MBQJGGTIB2JFUEGBJIY6GXRWEU23ONC65GUZXHM", { since, count: true })
+		client.queryAddressTransactionsByDate("FFJZOPQCYSRZISSJF33MBQJGGTIB2JFUEGBJIY6GXRWEU23ONC65GUZXHM", since, null, true)
 		.then((res) => {
 			expect(res).to.be.a("number");
 			done();
@@ -72,7 +72,7 @@ describe("Account operations", function() {
 	it("It should query address transacctions count by a date interval", function(done) {
 		const until = new Date().getTime() / 1000;
 		const since = until - 1000;
-		client.queryAddressTransactionsByDate("FFJZOPQCYSRZISSJF33MBQJGGTIB2JFUEGBJIY6GXRWEU23ONC65GUZXHM", { since, until, count: true })
+		client.queryAddressTransactionsByDate("FFJZOPQCYSRZISSJF33MBQJGGTIB2JFUEGBJIY6GXRWEU23ONC65GUZXHM", since, until, true)
 		.then((res) => {
 			expect(res).to.be.a("number");
 			done();

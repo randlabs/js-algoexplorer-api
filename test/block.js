@@ -37,7 +37,7 @@ describe("Block operations", function() {
 	});
 	it("It should query a block by a date", function(done) {
 		const since = new Date().getTime() / 1000;
-		client.queryBlocksByDate({ since })
+		client.queryBlocksByDate(since)
 		.then((res) => {
 			expect(res).to.be.a("array");
 			done();
@@ -49,7 +49,7 @@ describe("Block operations", function() {
 	it("It should query a block by a date interval", function(done) {
 		const until = new Date().getTime() / 1000;
 		const since = until - 100;
-		client.queryBlocksByDate({ since, until })
+		client.queryBlocksByDate(since, until)
 		.then((res) => {
 			expect(res).to.be.a("array");
 			done();
@@ -70,7 +70,7 @@ describe("Block operations", function() {
 	});
 	it("It should query the block count by a date", function(done) {
 		const since = new Date().getTime() / 1000;
-		client.queryBlocksByDate({ since, count: true })
+		client.queryBlocksByDate(since, null, true)
 		.then((res) => {
 			expect(res).to.be.a("number");
 			done();
@@ -82,7 +82,7 @@ describe("Block operations", function() {
 	it("It should query the block count by a date interval", function(done) {
 		const until = new Date().getTime() / 1000;
 		const since = until - 100;
-		client.queryBlocksByDate({ since, until, count: true })
+		client.queryBlocksByDate(since, until, true)
 		.then((res) => {
 			expect(res).to.be.a("number");
 			done();
