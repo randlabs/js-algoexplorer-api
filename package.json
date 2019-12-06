@@ -15,8 +15,8 @@
     "type": "git",
     "url": "git+https://github.com/randlabs/js-algoexplorer-api.git"
   },
-  "author": "Randlabs",
-  "license": "ISC",
+  "author": "Randlabs.io",
+  "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/randlabs/js-algoexplorer-api/issues"
   },
