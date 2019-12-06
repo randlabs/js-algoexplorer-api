@@ -146,7 +146,8 @@ const AlgoexplorerApi = function(networkName) {
 	 * @param {number} since The starting UTC timestamp (inclusive)
 	 * @param {number} [until] The ending UTC timestamp (inclusive)
 	 * @param {boolean} [count] If its true, will return the amount of transactions, else, will return an array of transactions
-	 * @return {(Promise<Array>|Promise<number>)} Returns the amount of transactions or a transactions array of the specified account since the specified interval of time
+	 * @return {(Promise<Array>|Promise<number>)} Returns the amount of transactions or a transactions array of 
+	 * the specified account since the specified interval of time
 	 */
 	this.queryAddressTransactionsByDate = function(address, since, until, count) {
 		return queryAddressTransactionsByDate(this._config, address, since, until, count);
@@ -188,7 +189,8 @@ const AlgoexplorerApi = function(networkName) {
 	 * @param {number} since The starting UTC timestamp (inclusive)
 	 * @param {number} [until] The ending UTC timestamp (inclusive)
 	 * @param {boolean} [count] If its true, will return the amount of transactions, else, will return an array of transactions
-	 * @return {(Promise<Array>|Promise<number>)} Returns the amount of transactions or a transactions array between the specified UTC timestamps
+	 * @return {(Promise<Array>|Promise<number>)} Returns the amount of transactions or a transactions array between
+	 * the specified UTC timestamps
 	 */
 	this.queryTransactionsByDate = function(since, until, count) {
 		return queryTransactionsByDate(this._config, since, until, count);
