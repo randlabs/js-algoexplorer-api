@@ -7,8 +7,8 @@ describe("Node operations", function() {
 	// eslint-disable-next-line no-invalid-this
 	this.timeout(5000);
 
-	it("It should get the statistics about the blockchain", function(done) {
-		client.status()
+	it("It should get the detailed statistics about the blockchain", function(done) {
+		client.queryStatus()
 		.then(() => {
 			done();
 		})
@@ -18,7 +18,7 @@ describe("Node operations", function() {
 	});
 
 	it("It should send transaction", function(done) {
-		client.blocksCount()
+		client.queryBlocksCount()
 		.then((blocksCount) => {
 			const mnemonic = "obtain extend cheap want ride fatal jungle reject field sell arm apology" +
 			" avocado grit ball enough rebuild false celery favorite cook soon talk abandon hope";
@@ -31,8 +31,7 @@ describe("Node operations", function() {
 				"firstRound": blocksCount + 1,
 				"lastRound": blocksCount + 100,
 				"genesisID": client.getGenesisId(),
-				"genesisHash": client.getGenesisHash(),
-				"note": new Uint8Array(0)
+				"genesisHash": client.getGenesisHash()
 			};
 			const signedTxn = algosdk.signTransaction(txn, keys.sk);
 			const hexa = Buffer.from(signedTxn.blob).toString('hex');

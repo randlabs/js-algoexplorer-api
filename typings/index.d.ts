@@ -75,14 +75,14 @@ export default class AlgoexplorerApi {
 	constructor(networkName: "mainnet" | "testnet" | "betanet");
 	getGenesisId(): string;
 	getGenesisHash(): string;
-	blocksCount(): Promise<number>;
+	queryBlocksCount(): Promise<number>;
 	queryBlock(round: number): Promise<Block>;
 	queryLatestBlocks(amount: number): Promise<Block[]>;
 	queryBlocksFromInterval(from: number, to: number): Promise<Block[]>;
 	queryBlocksByDate(options: Options): Promise<Block[]|number>;
 	queryBlockTransactions(round: number): Promise<Transaction[]>;
-	status(): Promise<Status>;
-	stats(): Promise<Stats>;
+	queryStatus(): Promise<Status>;
+	queryStats(): Promise<Stats>;
 	queryAddress(address: Address): Promise<AddressInfo>;
 	queryAddressTransactions(address: Address, count: number): Promise<Transaction[]>;
 	queryAddressTransactionsFromInterval(address: Address, from: number, to: number): Promise<Transaction[]>;

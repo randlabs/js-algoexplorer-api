@@ -1,6 +1,6 @@
 const { fetchGet } = require("./http/request");
 
-async function stats(config) {
+async function queryStats(config) {
 	const result = await fetchGet(config.url + "/stats");
 
 	return result.body;
@@ -35,7 +35,7 @@ async function getLastStakeAddress(config) {
 }
 
 module.exports = {
-	stats,
+	queryStats,
 	getGreatestAddressBalanceLastBlock,
 	getGreatestAddressBalanceInterval,
 	getLastStakeAddress

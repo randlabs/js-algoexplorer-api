@@ -11,7 +11,7 @@ async function sendTransaction(config, hexa) {
 	return result.body.hash;
 }
 
-async function status(config) {
+async function queryStatus(config) {
 	const result = await fetchGet(config.url + "/status");
 
 	return result.body;
@@ -19,5 +19,5 @@ async function status(config) {
 
 module.exports = {
 	sendTransaction,
-	status
+	queryStatus
 };

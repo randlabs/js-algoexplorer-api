@@ -23,7 +23,7 @@ Include this line in your HTML.
 const AlgoexplorerAPI = require("js-algoexplorer-api");
 const api = new AlgoexplorerAPI();
 (async () => {
-    console.log(await api.status());
+    console.log(await api.queryStatus());
 })().catch(e => {
     console.log(e);
 });
@@ -61,7 +61,7 @@ const api = new AlgoexplorerAPI();
 ```javascript
 (async () => {
     // Get blocks count
-    const blocksCount = await api.blocksCount();
+    const blocksCount = await api.queryBlocksCount();
     const mnemonic = "obtain extend cheap want ride fatal jungle reject field sell arm apology" +
     " avocado grit ball enough rebuild false celery favorite cook soon talk abandon hope";
     const keys = algosdk.mnemonicToSecretKey(mnemonic);

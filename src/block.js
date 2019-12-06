@@ -1,6 +1,6 @@
 const { fetchGet } = require("./http/request");
 
-async function blocksCount(config) {
+async function queryBlocksCount(config) {
 	const result = await fetchGet(config.url + "/block/count");
 
 	return result.body.blockCount;
@@ -83,7 +83,7 @@ async function queryBlockTransactions(config, round) {
 }
 
 module.exports = {
-	blocksCount,
+	queryBlocksCount,
 	queryBlock,
 	queryLatestBlocks,
 	queryBlocksFromInterval,

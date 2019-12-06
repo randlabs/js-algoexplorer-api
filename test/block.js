@@ -26,7 +26,7 @@ describe("Block operations", function() {
 		});
 	});
 	it("It should query block count", function(done) {
-		client.blocksCount()
+		client.queryBlocksCount()
 		.then((res) => {
 			expect(res).to.be.a("number");
 			done();

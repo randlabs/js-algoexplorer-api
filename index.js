@@ -1,15 +1,15 @@
 /* eslint-disable max-len */
 /* eslint-disable func-style */
 const { mainnet, testnet, betanet } = require("./src/http/networks");
-const { blocksCount, queryBlock, queryLatestBlocks, queryBlocksFromInterval,
+const { queryBlocksCount, queryBlock, queryLatestBlocks, queryBlocksFromInterval,
 	queryBlocksByDate, queryBlockTransactions } = require("./src/block");
-const { stats, getGreatestAddressBalanceLastBlock, getGreatestAddressBalanceInterval,
+const { queryStats, getGreatestAddressBalanceLastBlock, getGreatestAddressBalanceInterval,
 	getLastStakeAddress } = require("./src/statistics");
 const { queryAddress, queryAddressTransactions, queryAddressTransactionsFromInterval,
 	queryAddressTransactionsByDate } = require("./src/account");
 const { queryTransactionsCount, queryTransactions, queryLatestTransactions,
 	queryTransactionsFromInterval, queryTransactionsByDate } = require("./src/transaction");
-const { status, sendTransaction } = require("./src/node");
+const { queryStatus, sendTransaction } = require("./src/node");
 
 /// <reference path="typings/index.d.ts"/>
 // eslint-disable-next-line valid-jsdoc
@@ -57,8 +57,8 @@ const AlgoexplorerApi = function(networkName) {
 	/**
 	 * @return {Promise<number>} Returns the amount of available blocks
 	 */
-	this.blocksCount = function () {
-		return blocksCount(this._config);
+	this.queryBlocksCount = function () {
+		return queryBlocksCount(this._config);
 	};
 
 	/**
@@ -108,15 +108,15 @@ const AlgoexplorerApi = function(networkName) {
 	/**
 	 * @return {Promise<object>} Returns detailed statistics about the blockchain
 	 */
-	this.status = function() {
-		return status(this._config);
+	this.queryStatus = function() {
+		return queryStatus(this._config);
 	};
 
 	/**
 	 * @return {Promise<object>} Returns statistics about the blockchain
 	 */
-	this.stats = function() {
-		return stats(this._config);
+	this.queryStats = function() {
+		return queryStats(this._config);
 	};
 
 	// /**
