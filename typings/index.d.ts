@@ -40,11 +40,6 @@ export interface Transaction {
 	closeRewards?: number;
 }
 
-export interface Options {
-	since: number;
-	until?: number;
-	count?: boolean;
-}
 
 export interface Status {
 	round: number;
@@ -76,21 +71,21 @@ export default class AlgoexplorerApi {
 	getGenesisId(): string;
 	getGenesisHash(): string;
 	queryBlocksCount(): Promise<number>;
-	queryBlock(round: number): Promise<Block>;
-	queryLatestBlocks(amount: number): Promise<Block[]>;
+	queryBlock(roundOrId: number | string): Promise<Block>;
+	queryLatestBlocks(count: number): Promise<Block[]>;
 	queryBlocksFromInterval(from: number, to: number): Promise<Block[]>;
-	queryBlocksByDate(options: Options): Promise<Block[]|number>;
+	queryBlocksByDate(since: number, until?: number, count?: boolean): Promise<Block[]|number>;
 	queryBlockTransactions(round: number): Promise<Transaction[]>;
 	queryStatus(): Promise<Status>;
 	queryStats(): Promise<Stats>;
 	queryAddress(address: Address): Promise<AddressInfo>;
 	queryAddressTransactions(address: Address, count: number): Promise<Transaction[]>;
 	queryAddressTransactionsFromInterval(address: Address, from: number, to: number): Promise<Transaction[]>;
-	queryAddressTransactionsByDate(address: Address, options: Options): Promise<Transaction[]|number>;
+	queryAddressTransactionsByDate(address: Address, since: number, until?: number, count?: boolean): Promise<Transaction[]|number>;
 	queryTransactionsCount(): Promise<number>;
 	queryTransactions(id: number | TxHash): Promise<Transaction>;
 	queryLatestTransactions(count: number): Promise<Transaction[]>;
 	queryTransactionsFromInterval(from: number, to: number): Promise<Transaction[]>;
-	queryTransactionsByDate(options: Options): Promise<Transaction[]|number>;
+	queryTransactionsByDate(since: number, until?: number, count?: boolean): Promise<Transaction[]|number>;
 	sendTransaction(hexa: Hexa): Promise<TxHash>;
 }

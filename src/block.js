@@ -6,11 +6,11 @@ async function queryBlocksCount(config) {
 	return result.body.blockCount;
 }
 
-async function queryBlock(config, round) {
-	if ((typeof (round) !== "number" && typeof (round) !== "string") || (typeof (round) === "number" && round < 0)) {
+async function queryBlock(config, roundOrId) {
+	if ((typeof (roundOrId) !== "number" && typeof (roundOrId) !== "string") || (typeof (roundOrId) === "number" && roundOrId < 0)) {
 		throw new Error("Invalid argument, round must be a positive integer or a string hash");
 	}
-	const result = await fetchGet(config.url + "/block/" + round.toString());
+	const result = await fetchGet(config.url + "/block/" + roundOrId.toString());
 
 	return result.body;
 }
@@ -38,33 +38,35 @@ async function queryBlocksFromInterval(config, from, to) {
 	return result.body;
 }
 
-async function queryBlocksByDate(config, options) {
-	const date = (new Date().getTime() / 1000) + 60;
-	if (typeof (options.since) !== "number" || (options.until && typeof (options.until) !== "number")) {
+async function queryBlocksByDate(config, since, until, count) {
+	if (typeof (since) !== "number" || (until && typeof (until) !== "number")) {
 		throw new Error("Invalid arguments, the date must be a positive integer");
 	}
-	if (options.since < 1546300800 || options.since > date) {
+	if (since < 1546300800) {
 		throw new Error("Invalid date");
 	}
-	if (options.until && (options.until < options.since || options.until > date)) {
+	if (until && (until < since)) {
 		throw new Error("Invalid arguments, UNTIL must be greater than SINCE");
 	}
-	if (options.count && typeof (options.count) !== "boolean") {
+	if (count && typeof (count) !== "boolean") {
 		throw new Error("Invalid arguments, COUNT must be a boolean");
 	}
+	if (until && (until - since > 172800)) {
+		throw new Error("Invalid arguments. Timestamp distance cannot exceed 172800 seconds");
+	}
 	let result;
-	let url = config.url + "/block/since/" + options.since.toString();
-	if (options.count) {
-		if (options.until) {
-			result = await fetchGet(url + "/until/" + options.until.toString() + "/count");
+	let url = config.url + "/block/since/" + since.toString();
+	if (count) {
+		if (until) {
+			result = await fetchGet(url + "/until/" + until.toString() + "/count");
 		}
 		else {
 			result = await fetchGet(url + "/count");
 		}
 		return result.body.blockCount;
 	}
-	if (options.until) {
-		result = await fetchGet(url + "/until/" + options.until.toString());
+	if (until) {
+		result = await fetchGet(url + "/until/" + until.toString());
 	}
 	else {
 		result = await fetchGet(url);

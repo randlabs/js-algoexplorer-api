@@ -37,28 +37,30 @@ async function queryAddressTransactionsFromInterval(config, address, from, to) {
 	return result.body;
 }
 
-async function queryAddressTransactionsByDate(config, address, options) {
+async function queryAddressTransactionsByDate(config, address, since, until, count) {
 	if (!algosdk.isValidAddress(address)) {
 		throw new Error("Invalid address");
 	}
-	const date = (new Date().getTime() / 1000) + 60;
-	if (typeof (options.since) !== "number" || (options.until && typeof (options.until) !== "number")) {
+	if (typeof (since) !== "number" || (until && typeof (until) !== "number")) {
 		throw new Error("Invalid arguments, the date must be a positive integer");
 	}
-	if (options.since < 1546300800 || options.since > date) {
+	if (since < 1546300800) {
 		throw new Error("Invalid date");
 	}
-	if (options.until && (options.until < options.since || options.until > date)) {
+	if (until && (until < since)) {
 		throw new Error("Invalid arguments, UNTIL must be greater than SINCE");
 	}
-	if (options.count && typeof (options.count) !== "boolean") {
+	if (count && typeof (count) !== "boolean") {
 		throw new Error("Invalid arguments, COUNT must be a boolean");
 	}
+	if (until && (until - since > 172800)) {
+		throw new Error("Invalid arguments. Timestamp distance cannot exceed 172800 seconds");
+	}
 	let result;
-	let url = config.url + "/account/" + address + "/transactions/since/" + options.since.toString();
-	if (options.count) {
-		if (options.until) {
-			result = await fetchGet(url + "/until/" + options.until.toString() + "/count");
+	let url = config.url + "/account/" + address + "/transactions/since/" + since.toString();
+	if (count) {
+		if (until) {
+			result = await fetchGet(url + "/until/" + until.toString() + "/count");
 		}
 		else {
 			result = await fetchGet(url + "/count");
@@ -66,8 +68,8 @@ async function queryAddressTransactionsByDate(config, address, options) {
 
 		return result.body.txCount;
 	}
-	if (options.until) {
-		result = await fetchGet(url + "/until/" + options.until.toString());
+	if (until) {
+		result = await fetchGet(url + "/until/" + until.toString());
 	}
 	else {
 		result = await fetchGet(url);

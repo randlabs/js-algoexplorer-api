@@ -1,0 +1,36 @@
+<html>
+    <head>
+        <script src="../dist/algoexplorerapi.min.js"></script>
+    </head>
+    <body>
+        <div>
+            <p>Blockcount:</p>
+            <div id="Blockcount"></div>
+            <p>Address info:</p>
+            <div id="addr"></div>
+            <p>Stats:</p>
+            <div id="stats"></div>
+            <p>Status:</p>
+            <div id="status"></div>
+        </div>
+        <script>
+            const api = new AlgoexplorerAPI("testnet");
+            api.queryBlocksCount().then((res) =>{
+                let x = document.getElementById("Blockcount");
+                x.innerHTML = res.toString();
+            });
+            api.queryAddress("46QNIYQEMLKNOBTQC56UEBBHFNH37EWLHGT2KGL3ZGB4SW77W6V7GBKPDY").then((res) => {
+                let y = document.getElementById("addr");
+                y.innerHTML = JSON.stringify(res);
+            });
+            api.queryStats().then((res) => {
+                let z = document.getElementById("stats");
+                z.innerHTML = JSON.stringify(res);
+            })
+            api.queryStatus().then((res) => {
+                let a = document.getElementById("status");
+                a.innerHTML = JSON.stringify(res);
+            })
+        </script>
+    </body>
+</html>

@@ -62,19 +62,19 @@ const AlgoexplorerApi = function(networkName) {
 	};
 
 	/**
-	* @param {(number|string)} round A block number or block hash
+	* @param {(number|string)} roundOrId A block number or block hash
 	* @return {Promise<object>}  Returns the block information based on the specified round or hash
 	*/
-	this.queryBlock = function (round) {
-		return queryBlock(this._config, round);
+	this.queryBlock = function (roundOrId) {
+		return queryBlock(this._config, roundOrId);
 	};
 
 	/**
-	 * @param {number} amount Amount of blocks to return between 1 and 100
+	 * @param {number} count Amount of blocks to return between 1 and 100
 	 * @return {Promise<Array>} Returns the latest blocks
 	 */
-	this.queryLatestBlocks = function (amount) {
-		return queryLatestBlocks(this._config, amount);
+	this.queryLatestBlocks = function (count) {
+		return queryLatestBlocks(this._config, count);
 	};
 
 	/**
@@ -87,14 +87,13 @@ const AlgoexplorerApi = function(networkName) {
 	};
 
 	/**
-	 * @param {object} options The option object
-	 * @param {number} options.since The starting UTC timestamp (inclusive)
-	 * @param {number} [options.until] The ending UTC timestamp (inclusive)
-	 * @param {boolean} [options.count] If its true, will return the amount of blocks, else, will return an array of blocks
+	 * @param {number} since The starting UTC timestamp (inclusive)
+	 * @param {number} [until] The ending UTC timestamp (inclusive)
+	 * @param {boolean} [count] If its true, will return the amount of blocks, else, will return an array of blocks
 	 * @return {(Promise<Array>|Promise<number>)} Returns the amount of blocks or a blocks array since the specified interval of time
 	 */
-	this.queryBlocksByDate = function(options) {
-		return queryBlocksByDate(this._config, options);
+	this.queryBlocksByDate = function(since, until, count) {
+		return queryBlocksByDate(this._config, since, until, count);
 	};
 
 	/**
@@ -171,14 +170,13 @@ const AlgoexplorerApi = function(networkName) {
 
 	/**
 	 * @param {string} address Address of the account to query
-	 * @param {object} options The option object
-	 * @param {number} options.since The starting UTC timestamp (inclusive)
-	 * @param {number} [options.until] The ending UTC timestamp (inclusive)
-	 * @param {boolean} [options.count] If its true, will return the amount of transactions, else, will return an array of transactions
+	 * @param {number} since The starting UTC timestamp (inclusive)
+	 * @param {number} [until] The ending UTC timestamp (inclusive)
+	 * @param {boolean} [count] If its true, will return the amount of transactions, else, will return an array of transactions
 	 * @return {(Promise<Array>|Promise<number>)} Returns the amount of transactions or a transactions array of the specified account since the specified interval of time
 	 */
-	this.queryAddressTransactionsByDate = function(address, options) {
-		return queryAddressTransactionsByDate(this._config, address, options);
+	this.queryAddressTransactionsByDate = function(address, since, until, count) {
+		return queryAddressTransactionsByDate(this._config, address, since, until, count);
 	};
 
 	/**
@@ -214,14 +212,13 @@ const AlgoexplorerApi = function(networkName) {
 	};
 
 	/**
-	 * @param {object} options The option object
-	 * @param {number} options.since The starting UTC timestamp (inclusive)
-	 * @param {number} [options.until] The ending UTC timestamp (inclusive)
-	 * @param {boolean} [options.count] If its true, will return the amount of transactions, else, will return an array of transactions
+	 * @param {number} since The starting UTC timestamp (inclusive)
+	 * @param {number} [until] The ending UTC timestamp (inclusive)
+	 * @param {boolean} [count] If its true, will return the amount of transactions, else, will return an array of transactions
 	 * @return {(Promise<Array>|Promise<number>)} Returns the amount of transactions or a transactions array between the specified UTC timestamps
 	 */
-	this.queryTransactionsByDate = function(options) {
-		return queryTransactionsByDate(this._config, options);
+	this.queryTransactionsByDate = function(since, until, count) {
+		return queryTransactionsByDate(this._config, since, until, count);
 	};
 
 	/**
