@@ -8,6 +8,8 @@ const { queryTransactionsCount, queryTransactions, queryLatestTransactions,
 	queryTransactionsFromInterval, queryTransactionsByDate } = require("./src/transaction");
 const { queryStatus, sendTransaction } = require("./src/node");
 
+const { queryRelevantAssets } = require("./src/asset");
+
 /// <reference path="typings/index.d.ts"/>
 /**
 * @param {string} [networkName] - Network name (mainnet, testnet, betanet)
@@ -204,6 +206,14 @@ const AlgoexplorerApi = function(networkName) {
 	this.sendTransaction = function(hexa) {
 		return sendTransaction(this._config, hexa);
 	};
+
+	/**
+	 * @param {string} address Address that identifies this account
+	 * @returns {Promise<Array>} Returns assets that had movements in this account
+	 */
+	this.queryRelevantAssets = function(address) {
+		return queryRelevantAssets(this._config, address);
+	}
 };
 
 module.exports = AlgoexplorerApi;
