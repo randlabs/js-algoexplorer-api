@@ -13,33 +13,158 @@ export interface Block {
 	timestamp: number;
 }
 
-export interface Transaction {
+export interface PayTransaction {
+	type: "pay";
 	index: number;
-	txid: TxHash;
-	from: Address;
-	fee: number;
-	type: "pay" | "keyreg" | "acfg" | "axfer" | "afrz";
-	firstRound: number;
-	lastRound: number;
-	noteb64: string;
-	fromIndex: number;
 	round: number;
 	timestamp: number;
-	to?: Address;
-	amount?: number;
-	toIndex?: number;
+	balance?: number;
+	txid: TxHash;
+	globalIndex?: number;
+	from: Address;
+	fromIndex: number;
+	fromBalance: number;
+	accumulatedFromRewards: number;
+	fee: number;
+	firstRound: number;
+	lastRound: number;
+	noteb64?: string;
+	fromRewards?: number;
+	group?: string;
+	to:	Address;
+	toIndex: number;
+	amount: number;
 	toRewards?: number;
-	fromBalance?: number;
-	accumulatedFromRewards?: number;
-	toBalance?: number;
-	accumulatedToRewards?: number;
-	close?: Address,
-	closeBalance?: number;
-	closeAmount?: number;
-	accumulatedCloseRewards?: number;
+	toBalance: number;
+	accumulatedToRewards: number;
+	close?: Address;
 	closeRewards?: number;
+	closeAmount?: number;
+	closeBalance?: number;
+	closeIndex?: number;
+	accumulatedCloseRewards?: number;
 }
 
+export interface AssetTransferTransaction {
+	type: "axfer";
+	index: number;
+	round: number;
+	timestamp: number;
+	balance?: number;
+	txid: TxHash;
+	globalIndex?: number;
+	from: Address;
+	fromIndex: number;
+	fromBalance: number;
+	accumulatedFromRewards: number;
+	fee: number;
+	firstRound: number;
+	lastRound: number;
+	noteb64?: string;
+	fromRewards?: number;
+	group?: string;
+	assetID: number;
+	sender?: Address;
+	fromAssetBalance: number;
+	to: Address;
+	toIndex: number;
+	amount: number;
+	toAssetBalance: number;
+	close?: Address;
+	closeAmount?: number;
+	closeAssetBalance?: number;
+	closeIndex?: number;
+	unitName?: string;
+	assetName?: string;
+}
+
+export interface AssetConfigurationTransaction {
+	type: "acfg";
+	index: number;
+	round: number;
+	timestamp: number;
+	balance?: number;
+	txid: TxHash;
+	globalIndex?: number;
+	from: Address;
+	fromIndex: number;
+	fromBalance: number;
+	accumulatedFromRewards: number;
+	fee: number;
+	firstRound: number;
+	lastRound: number;
+	noteb64?: string;
+	fromRewards?: number;
+	group?: string;
+	assetID: number;
+	creator?: Address;
+	total: number;
+	defaultFrozen?: boolean;
+	unitName?: string;
+	assetName?: string;
+	url?: string;
+	metadataHashb64?: string;
+	managerAccount?: Address;
+	reserveAccount?: Address;
+	freezeAccount?: Address;
+	clawbackAccount?: Address;
+}
+
+export interface AssetFreezeTransaction {
+	type: "afrz";
+	index: number;
+	round: number;
+	timestamp: number;
+	balance?: number;
+	txid: TxHash;
+	globalIndex?: number;
+	from: Address;
+	fromIndex: number;
+	fromBalance: number;
+	accumulatedFromRewards: number;
+	fee: number;
+	firstRound: number;
+	lastRound: number;
+	noteb64?: string;
+	fromRewards?: number;
+	group?: string;
+	assetID: number;
+	account: Address;
+	unitName?: string;
+	assetName?: string;
+	newFreezeStatus: boolean;	
+}
+
+export interface KeyregTransaction {
+	type: "keyreg";
+	index: number;
+	round: number;
+	timestamp: number;
+	balance?: number;
+	txid: TxHash;
+	globalIndex?: number;
+	from: Address;
+	fromIndex: number;
+	fromBalance: number;
+	accumulatedFromRewards: number;
+	fee: number;
+	firstRound: number;
+	lastRound: number;
+	noteb64?: string;
+	fromRewards?: number;
+	group?: string;
+	keyreg: KeyReg;
+}
+
+export type Transaction = PayTransaction | AssetTransferTransaction | AssetConfigurationTransaction | AssetFreezeTransaction | KeyregTransaction;
+
+export interface KeyReg {
+	voteKey: string;
+	selectionKey: string;
+	voteFirst: number;
+	voteLast: number;
+	voteKeyDilution: string;
+}
 
 export interface Status {
 	round: number;
@@ -65,6 +190,14 @@ export interface AddressInfo {
 	status: "Online" | "Offline";
 }
 
+export interface AssetInfo {
+	id: number;
+	balance: number;	
+	name?: string;	
+	unitName?: string;	
+	timestamp: number;
+}
+
 export default class AlgoexplorerApi {
 	constructor();
 	constructor(networkName: "mainnet" | "testnet" | "betanet");
@@ -88,4 +221,5 @@ export default class AlgoexplorerApi {
 	queryTransactionsFromInterval(from: number, to: number): Promise<Transaction[]>;
 	queryTransactionsByDate(since: number, until?: number, count?: boolean): Promise<Transaction[]|number>;
 	sendTransaction(hexa: Hexa): Promise<TxHash>;
+	queryRelevantAssets(address: Address): Promise<AssetInfo[]>;
 }
