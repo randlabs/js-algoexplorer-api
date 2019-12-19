@@ -46,7 +46,7 @@ describe("Account operations", function() {
 		});
 	});
 	it("It should query transactions by a date", function(done) {
-		const since = new Date().getTime() / 1000;
+		const since = Math.trunc(new Date().getTime() / 1000);
 		client.queryTransactionsByDate(since)
 		.then((res) => {
 			expect(res).to.be.a("array");
@@ -57,7 +57,7 @@ describe("Account operations", function() {
 		});
 	});
 	it("It should query transactions by a range of date", function(done) {
-		const until = new Date().getTime() / 1000;
+		const until = Math.trunc(new Date().getTime() / 1000);
 		const since = until - 100;
 		client.queryTransactionsByDate(since, until)
 		.then((res) => {
@@ -69,7 +69,7 @@ describe("Account operations", function() {
 		});
 	});
 	it("It should query transactions count by a date", function(done) {
-		const since = new Date().getTime() / 1000;
+		const since = Math.trunc(new Date().getTime() / 1000);
 		client.queryTransactionsByDate(since, null, true)
 		.then((res) => {
 			expect(res).to.be.a("number");
@@ -80,7 +80,7 @@ describe("Account operations", function() {
 		});
 	});
 	it("It should query transactions count by a range of date", function(done) {
-		const until = new Date().getTime() / 1000;
+		const until = Math.trunc(new Date().getTime() / 1000);
 		const since = until - 100;
 		client.queryTransactionsByDate(since, until, true)
 		.then((res) => {

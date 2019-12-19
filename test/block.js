@@ -36,7 +36,7 @@ describe("Block operations", function() {
 		});
 	});
 	it("It should query a block by a date", function(done) {
-		const since = new Date().getTime() / 1000;
+		const since = Math.trunc(new Date().getTime() / 1000);
 		client.queryBlocksByDate(since)
 		.then((res) => {
 			expect(res).to.be.a("array");
@@ -47,7 +47,7 @@ describe("Block operations", function() {
 		});
 	});
 	it("It should query a block by a date interval", function(done) {
-		const until = new Date().getTime() / 1000;
+		const until = Math.trunc(new Date().getTime() / 1000);
 		const since = until - 100;
 		client.queryBlocksByDate(since, until)
 		.then((res) => {
@@ -69,7 +69,7 @@ describe("Block operations", function() {
 		});
 	});
 	it("It should query the block count by a date", function(done) {
-		const since = new Date().getTime() / 1000;
+		const since = Math.trunc(new Date().getTime() / 1000);
 		client.queryBlocksByDate(since, null, true)
 		.then((res) => {
 			expect(res).to.be.a("number");
@@ -80,7 +80,7 @@ describe("Block operations", function() {
 		});
 	});
 	it("It should query the block count by a date interval", function(done) {
-		const until = new Date().getTime() / 1000;
+		const until = Math.trunc(new Date().getTime() / 1000);
 		const since = until - 100;
 		client.queryBlocksByDate(since, until, true)
 		.then((res) => {
