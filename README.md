@@ -71,8 +71,8 @@ const api = new AlgoexplorerAPI();
         "to": "46QNIYQEMLKNOBTQC56UEBBHFNH37EWLHGT2KGL3ZGB4SW77W6V7GBKPDY",
         "fee": 1000,
         "amount": 10000,
-        "firstRound": blocksCount + 1,
-        "lastRound": blocksCount + 100,
+        "firstRound": blocksCount,
+        "lastRound": blocksCount + 20,
         "genesisID": client.getGenesisId(),
         "genesisHash": client.getGenesisHash(),
         "note": new Uint8Array(0)
