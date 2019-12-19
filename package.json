@@ -8,7 +8,7 @@
   },
   "types": "typings/index.d.ts",
   "scripts": {
-    "test": "./node_modules/mocha/bin/mocha test",
+    "test": "node ./node_modules/mocha/bin/mocha test",
     "build": "./node_modules/browserify/bin/cmd.js index.js -s AlgoexplorerAPI | ./node_modules/minify/bin/minify.js --js > dist/algoexplorerapi.min.js"
   },
   "repository": {
