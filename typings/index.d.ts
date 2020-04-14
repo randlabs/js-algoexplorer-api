@@ -1,6 +1,7 @@
 export type Address = string;
 export type TxHash = string;
 export type Hexa = string;
+export type Network = "mainnet" | "testnet" | "betanet";
 
 export interface Block {
 	round: number;
@@ -207,26 +208,29 @@ export interface AssetInfo {
 
 export default class AlgoexplorerApi {
 	constructor();
-	constructor(networkName: "mainnet" | "testnet" | "betanet");
+	constructor(networkName: Network);
 	getGenesisId(): string;
 	getGenesisHash(): string;
 	queryBlocksCount(): Promise<number>;
 	queryBlock(roundOrId: number | string): Promise<Block>;
 	queryLatestBlocks(count: number): Promise<Block[]>;
 	queryBlocksFromInterval(from: number, to: number): Promise<Block[]>;
-	queryBlocksByDate(since: number, until?: number, count?: boolean): Promise<Block[]|number>;
+	queryBlocksByDate(since: number, until?: number): Promise<Block[]>;
+	queryBlocksByDate(since: number, until?: number, count?: boolean): Promise<number>;
 	queryBlockTransactions(round: number): Promise<Transaction[]>;
 	queryStatus(): Promise<Status>;
 	queryStats(): Promise<Stats>;
 	queryAddress(address: Address): Promise<AddressInfo>;
 	queryAddressTransactions(address: Address, count: number): Promise<Transaction[]>;
 	queryAddressTransactionsFromInterval(address: Address, from: number, to: number): Promise<Transaction[]>;
-	queryAddressTransactionsByDate(address: Address, since: number, until?: number, count?: boolean): Promise<Transaction[]|number>;
+	queryAddressTransactionsByDate(address: Address, since: number, until?: number): Promise<Transaction[]>;
+	queryAddressTransactionsByDate(address: Address, since: number, until?: number, count?: boolean): Promise<number>;
 	queryTransactionsCount(): Promise<number>;
 	queryTransactions(id: number | TxHash): Promise<Transaction>;
 	queryLatestTransactions(count: number): Promise<Transaction[]>;
 	queryTransactionsFromInterval(from: number, to: number): Promise<Transaction[]>;
-	queryTransactionsByDate(since: number, until?: number, count?: boolean): Promise<Transaction[]|number>;
+	queryTransactionsByDate(since: number, until?: number): Promise<Transaction[]>;
+	queryTransactionsByDate(since: number, until?: number, count?: boolean): Promise<number>;
 	sendTransaction(hexa: Hexa): Promise<TxHash>;
 	queryRelevantAssets(address: Address): Promise<AssetInfo[]>;
 }
