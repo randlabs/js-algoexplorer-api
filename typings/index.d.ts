@@ -4,11 +4,11 @@ export type Hexa = string;
 
 export interface Block {
 	round: number;
-	hash: TxHash,
-	txns: TxHash[],
-	seed: string,
-	prevHash: TxHash,
-	proposer: Address,
+	hash: TxHash;
+	txns: TxHash[];
+	seed: string;
+	prevHash: TxHash;
+	proposer: Address;
 	reward: number;
 	timestamp: number;
 }
@@ -16,6 +16,7 @@ export interface Block {
 export interface PayTransaction {
 	type: "pay";
 	index: number;
+	localAssetIndex: number;
 	round: number;
 	timestamp: number;
 	balance?: number;
@@ -31,7 +32,7 @@ export interface PayTransaction {
 	noteb64?: string;
 	fromRewards?: number;
 	group?: string;
-	to:	Address;
+	to: Address;
 	toIndex: number;
 	amount: number;
 	toRewards?: number;
@@ -48,6 +49,7 @@ export interface PayTransaction {
 export interface AssetTransferTransaction {
 	type: "axfer";
 	index: number;
+	localAssetIndex: number;
 	round: number;
 	timestamp: number;
 	balance?: number;
@@ -76,11 +78,13 @@ export interface AssetTransferTransaction {
 	closeIndex?: number;
 	unitName?: string;
 	assetName?: string;
+	decimals?: number;
 }
 
 export interface AssetConfigurationTransaction {
 	type: "acfg";
 	index: number;
+	localAssetIndex: number;
 	round: number;
 	timestamp: number;
 	balance?: number;
@@ -113,6 +117,7 @@ export interface AssetConfigurationTransaction {
 export interface AssetFreezeTransaction {
 	type: "afrz";
 	index: number;
+	localAssetIndex: number;
 	round: number;
 	timestamp: number;
 	balance?: number;
@@ -132,12 +137,13 @@ export interface AssetFreezeTransaction {
 	account: Address;
 	unitName?: string;
 	assetName?: string;
-	newFreezeStatus: boolean;	
+	newFreezeStatus: boolean;
 }
 
 export interface KeyregTransaction {
 	type: "keyreg";
 	index: number;
+	localAssetIndex: number;
 	round: number;
 	timestamp: number;
 	balance?: number;
@@ -156,7 +162,8 @@ export interface KeyregTransaction {
 	keyreg: KeyReg;
 }
 
-export type Transaction = PayTransaction | AssetTransferTransaction | AssetConfigurationTransaction | AssetFreezeTransaction | KeyregTransaction;
+export type Transaction = PayTransaction | AssetTransferTransaction |
+AssetConfigurationTransaction | AssetFreezeTransaction | KeyregTransaction;
 
 export interface KeyReg {
 	voteKey: string;
@@ -192,9 +199,9 @@ export interface AddressInfo {
 
 export interface AssetInfo {
 	id: number;
-	balance: number;	
-	name?: string;	
-	unitName?: string;	
+	balance: number;
+	name?: string;
+	unitName?: string;
 	timestamp: number;
 }
 

@@ -1,5 +1,5 @@
 const { fetchGet } = require("./http/request");
-const algosdk = require('algosdk');
+const algosdk = require("algosdk");
 
 
 async function queryRelevantAssets(config, address) {

@@ -8,7 +8,7 @@ describe("Assets operations", function() {
 	it("It should query the relevant assets of a specific account", function(done) {
 		client.queryRelevantAssets("46QNIYQEMLKNOBTQC56UEBBHFNH37EWLHGT2KGL3ZGB4SW77W6V7GBKPDY")
 		.then((res) => {
-			expect(res).to.be.a("array");
+			expect(res).to.be.a("object");
 			done();
 		})
 		.catch((err) => {
