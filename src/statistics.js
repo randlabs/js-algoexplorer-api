@@ -34,9 +34,19 @@ async function getLastStakeAddress(config) {
 	return result.body;
 }
 
+async function queryAlgoStats(config) {
+	if (config.id !== "mainnet-v1.0") {
+		throw new Error("Invalid query, network must be mainnet");
+	}
+	const result = await fetchGet(config.url + "/stats/algoprice");
+
+	return result.body;
+}
+
 module.exports = {
 	queryStats,
 	getGreatestAddressBalanceLastBlock,
 	getGreatestAddressBalanceInterval,
-	getLastStakeAddress
+	getLastStakeAddress,
+	queryAlgoStats
 };

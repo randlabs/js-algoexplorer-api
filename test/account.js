@@ -6,7 +6,7 @@ describe("Account operations", function() {
 	// eslint-disable-next-line no-invalid-this
 	this.timeout(5000);
 	it("It should query address information", function(done) {
-		client.queryAddress("FFJZOPQCYSRZISSJF33MBQJGGTIB2JFUEGBJIY6GXRWEU23ONC65GUZXHM")
+		client.queryAccount("FFJZOPQCYSRZISSJF33MBQJGGTIB2JFUEGBJIY6GXRWEU23ONC65GUZXHM")
 		.then((res) => {
 			expect(res).to.be.a("object");
 			done();
@@ -16,7 +16,7 @@ describe("Account operations", function() {
 		});
 	});
 	it("It should query latest transactions of specified address", function(done) {
-		client.queryAddressTransactions("FFJZOPQCYSRZISSJF33MBQJGGTIB2JFUEGBJIY6GXRWEU23ONC65GUZXHM", 10)
+		client.queryAccountTransactions("FFJZOPQCYSRZISSJF33MBQJGGTIB2JFUEGBJIY6GXRWEU23ONC65GUZXHM", 10)
 		.then((res) => {
 			expect(res).to.be.a("array");
 			done();
@@ -26,7 +26,7 @@ describe("Account operations", function() {
 		});
 	});
 	it("It should query address transactions between specified indexes", function(done) {
-		client.queryAddressTransactionsFromInterval("FFJZOPQCYSRZISSJF33MBQJGGTIB2JFUEGBJIY6GXRWEU23ONC65GUZXHM", 50, 55)
+		client.queryAccountTransactionsFromInterval("FFJZOPQCYSRZISSJF33MBQJGGTIB2JFUEGBJIY6GXRWEU23ONC65GUZXHM", 50, 55)
 		.then((res) => {
 			expect(res).to.be.a("array");
 			done();
@@ -37,7 +37,7 @@ describe("Account operations", function() {
 	});
 	it("It should query address transacctions by a date", function(done) {
 		const since = Math.trunc(new Date().getTime() / 1000);
-		client.queryAddressTransactionsByDate("FFJZOPQCYSRZISSJF33MBQJGGTIB2JFUEGBJIY6GXRWEU23ONC65GUZXHM", since)
+		client.queryAccountTransactionsByDate("FFJZOPQCYSRZISSJF33MBQJGGTIB2JFUEGBJIY6GXRWEU23ONC65GUZXHM", since)
 		.then((res) => {
 			expect(res).to.be.a("array");
 			done();
@@ -49,7 +49,7 @@ describe("Account operations", function() {
 	it("It should query address transactions by a date interval", function(done) {
 		const until = Math.trunc(new Date().getTime() / 1000);
 		const since = until - 1000;
-		client.queryAddressTransactionsByDate("FFJZOPQCYSRZISSJF33MBQJGGTIB2JFUEGBJIY6GXRWEU23ONC65GUZXHM", since, until)
+		client.queryAccountTransactionsByDate("FFJZOPQCYSRZISSJF33MBQJGGTIB2JFUEGBJIY6GXRWEU23ONC65GUZXHM", since, until)
 		.then((res) => {
 			expect(res).to.be.a("array");
 			done();
@@ -60,7 +60,7 @@ describe("Account operations", function() {
 	});
 	it("It should query address transacctions count by a date", function(done) {
 		const since = Math.trunc(new Date().getTime() / 1000);
-		client.queryAddressTransactionsByDate("FFJZOPQCYSRZISSJF33MBQJGGTIB2JFUEGBJIY6GXRWEU23ONC65GUZXHM", since, null, true)
+		client.queryAccountTransactionsByDate("FFJZOPQCYSRZISSJF33MBQJGGTIB2JFUEGBJIY6GXRWEU23ONC65GUZXHM", since, null, true)
 		.then((res) => {
 			expect(res).to.be.a("number");
 			done();
@@ -72,9 +72,29 @@ describe("Account operations", function() {
 	it("It should query address transacctions count by a date interval", function(done) {
 		const until = Math.trunc(new Date().getTime() / 1000);
 		const since = until - 1000;
-		client.queryAddressTransactionsByDate("FFJZOPQCYSRZISSJF33MBQJGGTIB2JFUEGBJIY6GXRWEU23ONC65GUZXHM", since, until, true)
+		client.queryAccountTransactionsByDate("FFJZOPQCYSRZISSJF33MBQJGGTIB2JFUEGBJIY6GXRWEU23ONC65GUZXHM", since, until, true)
 		.then((res) => {
 			expect(res).to.be.a("number");
+			done();
+		})
+		.catch((err) => {
+			done(err);
+		});
+	});
+	it("It should query the assets of a specific account", function(done) {
+		client.queryAccountAssets("46QNIYQEMLKNOBTQC56UEBBHFNH37EWLHGT2KGL3ZGB4SW77W6V7GBKPDY")
+		.then((res) => {
+			expect(res).to.be.a("object");
+			done();
+		})
+		.catch((err) => {
+			done(err);
+		});
+	});
+	it("It should query the asset transactions from interval of a specific account", function(done) {
+		client.queryAccountAssetTransactionsFromInterval("BS4KWRPV3TL7OMJ2YEQAGCDW6G72OCIX3GQFGPA4ND34OTVC4ZX5KUEAC4", 326415, 0, 50)
+		.then((res) => {
+			expect(res).to.be.a("array");
 			done();
 		})
 		.catch((err) => {

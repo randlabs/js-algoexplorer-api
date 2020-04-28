@@ -1,16 +1,14 @@
 const { fetchGet } = require("./http/request");
-const algosdk = require("algosdk");
 
-
-async function queryRelevantAssets(config, address) {
-	if (!algosdk.isValidAddress(address)) {
-		throw new Error("Invalid address");
+async function queryAssetInfo(config, assetID) {
+	if (typeof (assetID) !== "number" || assetID < 0) {
+		throw new Error("Invalid arguments, assetID must be a positive integer");
 	}
-	const result = await fetchGet(config.url + "/account/" + address + "/assets/relevant");
+	const result = await fetchGet(config.url + "/asset/" + assetID.toString() + "/info");
 
 	return result.body;
 }
 
 module.exports = {
-	queryRelevantAssets
+	queryAssetInfo
 };

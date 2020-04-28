@@ -19,7 +19,7 @@
                 let x = document.getElementById("Blockcount");
                 x.innerHTML = res.toString();
             });
-            api.queryAddress("46QNIYQEMLKNOBTQC56UEBBHFNH37EWLHGT2KGL3ZGB4SW77W6V7GBKPDY").then((res) => {
+            api.queryAccount("46QNIYQEMLKNOBTQC56UEBBHFNH37EWLHGT2KGL3ZGB4SW77W6V7GBKPDY").then((res) => {
                 let y = document.getElementById("addr");
                 y.innerHTML = JSON.stringify(res);
             });

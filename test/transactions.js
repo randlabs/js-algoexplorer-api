@@ -101,4 +101,24 @@ describe("Transaction operations", function() {
 			done(err);
 		});
 	});
+	it("It should query asset transactions", function(done) {
+		client.queryAssetTransactions(326415, 100)
+		.then((res) => {
+			expect(res).to.be.a("array");
+			done();
+		})
+		.catch((err) => {
+			done(err);
+		});
+	});
+	it("It should query asset transactions from interval", function(done) {
+		client.queryAssetTransactionsFromInterval(326415, 0, 50)
+		.then((res) => {
+			expect(res).to.be.a("array");
+			done();
+		})
+		.catch((err) => {
+			done(err);
+		});
+	});
 });

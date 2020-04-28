@@ -1,7 +1,7 @@
 const { fetchGet } = require("./http/request");
 const algosdk = require("algosdk");
 
-async function queryAddress(config, address) {
+async function queryAccount(config, address) {
 	if (!algosdk.isValidAddress(address)) {
 		throw new Error("Invalid address");
 	}
@@ -10,7 +10,7 @@ async function queryAddress(config, address) {
 	return result.body;
 }
 
-async function queryAddressTransactions(config, address, count) {
+async function queryAccountTransactions(config, address, count) {
 	if (!algosdk.isValidAddress(address)) {
 		throw new Error("Invalid address");
 	}
@@ -22,7 +22,7 @@ async function queryAddressTransactions(config, address, count) {
 	return result.body;
 }
 
-async function queryAddressTransactionsFromInterval(config, address, from, to) {
+async function queryAccountTransactionsFromInterval(config, address, from, to) {
 	if (!algosdk.isValidAddress(address)) {
 		throw new Error("Invalid address");
 	}
@@ -37,7 +37,7 @@ async function queryAddressTransactionsFromInterval(config, address, from, to) {
 	return result.body;
 }
 
-async function queryAddressTransactionsByDate(config, address, since, until, count) {
+async function queryAccountTransactionsByDate(config, address, since, until, count) {
 	if (!algosdk.isValidAddress(address)) {
 		throw new Error("Invalid address");
 	}
@@ -78,9 +78,39 @@ async function queryAddressTransactionsByDate(config, address, since, until, cou
 	return result.body;
 }
 
+async function queryAccountAssets(config, address) {
+	if (!algosdk.isValidAddress(address)) {
+		throw new Error("Invalid address");
+	}
+	const result = await fetchGet(config.url + "/account/" + address + "/assets/relevant");
+
+	return result.body;
+}
+
+async function queryAccountAssetTransactionsFromInterval(config, address, assetID, from, to) {
+	if (!algosdk.isValidAddress(address)) {
+		throw new Error("Invalid address");
+	}
+	if (typeof (assetID) !== "number" || assetID < 0) {
+		throw new Error("Invalid arguments, assetID must be a positive integer");
+	}
+	if (typeof (from) !== "number" || typeof (to) !== "number" || (to - from) < 1 || from < 0 || to < from) {
+		throw new Error("Invalid arguments, FROM and TO must be a positive integers, and TO must be greater than FROM");
+	}
+	if (to - from > 100) {
+		throw new Error("Max transactions to query is 100");
+	}
+	const result = await fetchGet(config.url + "/account/" + address + "/asset/" + assetID.toString() +
+	"/transactions/from/" + from.toString() + "/to/" + to.toString());
+
+	return result.body;
+}
+
 module.exports = {
-	queryAddress,
-	queryAddressTransactions,
-	queryAddressTransactionsFromInterval,
-	queryAddressTransactionsByDate
+	queryAccount,
+	queryAccountTransactions,
+	queryAccountTransactionsFromInterval,
+	queryAccountTransactionsByDate,
+	queryAccountAssets,
+	queryAccountAssetTransactionsFromInterval
 };

@@ -1,5 +1,6 @@
 const AlgoexplorerApi = require("../index");
-const client = new AlgoexplorerApi("testnet");
+const expect = require("chai").expect;
+const client = new AlgoexplorerApi("mainnet");
 
 
 describe("Statistics operations", function() {
@@ -8,7 +9,19 @@ describe("Statistics operations", function() {
 
 	it("It should get the statistics about the blockchain", function(done) {
 		client.queryStats()
-		.then(() => {
+		.then((res) => {
+			expect(res).to.be.a("object");
+			done();
+		})
+		.catch((err) => {
+			done(err);
+		});
+	});
+
+	it("It should get algo price", function(done) {
+		client.queryAlgoPrice()
+		.then((res) => {
+			expect(res).to.be.a("object");
 			done();
 		})
 		.catch((err) => {

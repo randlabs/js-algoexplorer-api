@@ -1,14 +1,16 @@
 const { mainnet, testnet, betanet } = require("./src/http/networks");
 const { queryBlocksCount, queryBlock, queryLatestBlocks, queryBlocksFromInterval,
 	queryBlocksByDate, queryBlockTransactions } = require("./src/block");
-const { queryStats } = require("./src/statistics");
-const { queryAddress, queryAddressTransactions, queryAddressTransactionsFromInterval,
-	queryAddressTransactionsByDate } = require("./src/account");
+const { queryStats, queryAlgoStats } = require("./src/statistics");
+const { queryAccount, queryAccountTransactions, queryAccountTransactionsFromInterval,
+	queryAccountTransactionsByDate, queryAccountAssets,
+	queryAccountAssetTransactionsFromInterval } = require("./src/account");
 const { queryTransactionsCount, queryTransactions, queryLatestTransactions,
-	queryTransactionsFromInterval, queryTransactionsByDate } = require("./src/transaction");
+	queryTransactionsFromInterval, queryTransactionsByDate, queryAssetTransactions,
+	queryAssetTransactionsFromInterval } = require("./src/transaction");
 const { queryStatus, sendTransaction } = require("./src/node");
 
-const { queryRelevantAssets } = require("./src/asset");
+const { queryAssetInfo } = require("./src/asset");
 
 /// <reference path="typings/index.d.ts"/>
 /**
@@ -117,11 +119,18 @@ const AlgoexplorerApi = function(networkName) {
 	};
 
 	/**
+	 * @return {Promise<object>} Returns last known price of Algo in US dollars
+	 */
+	this.queryAlgoPrice = function() {
+		return queryAlgoStats(this._config)
+	}
+
+	/**
 	 * @param {string} address Address of the account to query
 	 * @return {Promise<object>} Returns information about the specified address
 	 */
-	this.queryAddress = function(address) {
-		return queryAddress(this._config, address);
+	this.queryAccount = function(address) {
+		return queryAccount(this._config, address);
 	};
 
 	/**
@@ -129,8 +138,8 @@ const AlgoexplorerApi = function(networkName) {
 	 * @param {number} count Amount of transactions to return. Limited to values between 1 and 100
 	 * @return {Promise<Array>} Returns the latest transactions of the specified account
 	 */
-	this.queryAddressTransactions = function (address, count) {
-		return queryAddressTransactions(this._config, address, count);
+	this.queryAccountTransactions = function (address, count) {
+		return queryAccountTransactions(this._config, address, count);
 	};
 
 	/**
@@ -139,8 +148,8 @@ const AlgoexplorerApi = function(networkName) {
 	 * @param {number} to The ending index number (inclusive)
 	 * @return {Promise<Array>} Returns the transactions between the specified indexes of the specified account
 	 */
-	this.queryAddressTransactionsFromInterval = function(address, from, to) {
-		return queryAddressTransactionsFromInterval(this._config, address, from, to);
+	this.queryAccountTransactionsFromInterval = function(address, from, to) {
+		return queryAccountTransactionsFromInterval(this._config, address, from, to);
 	};
 
 	/**
@@ -151,9 +160,28 @@ const AlgoexplorerApi = function(networkName) {
 	 * @return {(Promise<Array>|Promise<number>)} Returns the amount of transactions or a transactions array of 
 	 * the specified account since the specified interval of time
 	 */
-	this.queryAddressTransactionsByDate = function(address, since, until, count) {
-		return queryAddressTransactionsByDate(this._config, address, since, until, count);
+	this.queryAccountTransactionsByDate = function(address, since, until, count) {
+		return queryAccountTransactionsByDate(this._config, address, since, until, count);
 	};
+
+	/**
+	 * @param {string} address Address that identifies this account
+	 * @returns {Promise<object>} Returns assets that had movements in this account
+	 */
+	this.queryAccountAssets = function(address) {
+		return queryAccountAssets(this._config, address);
+	}
+
+	/**
+	 * @param {string} address Address of the account to query
+	 * @param {number} assetID Asset ID of the transactions
+	 * @param {number} from The starting index number (inclusive)
+	 * @param {number} to The ending index number (inclusive)
+	 * @return {Promise<Array>} Returns the asset transactions between the specified indexes of the specified account
+	 */
+	this.queryAccountAssetTransactionsFromInterval = function(address, assetID, from, to) {
+		return queryAccountAssetTransactionsFromInterval(this._config, address, assetID, from, to);
+	}
 
 	/**
 	 * @return {Promise<number>} Returns the amount of available transactions
@@ -199,6 +227,19 @@ const AlgoexplorerApi = function(networkName) {
 	};
 
 	/**
+	 * @param {number} assetID Asset ID of the transactions
+	 * @param {number} count Amount of max coming txs
+	 * @return {Promise<Array>} Returns latest {count} transactions of an asset. The list of transactions returned is ordered from least recent transaction to most recent transaction
+	 */
+	this.queryAssetTransactions = function(assetID, count) {
+		return queryAssetTransactions(this._config, assetID, count)
+	}
+
+	this.queryAssetTransactionsFromInterval = function(assetID, from, to) {
+		return queryAssetTransactionsFromInterval(this._config, assetID, from, to);
+	}
+
+	/**
 	 * @description Sends a RAW transaction to the blockchain
 	 * @param {string} hexa The hexa string of the transaction
 	 * @return {Promise<string>} Resturns the transaction hash
@@ -208,11 +249,11 @@ const AlgoexplorerApi = function(networkName) {
 	};
 
 	/**
-	 * @param {string} address Address that identifies this account
-	 * @returns {Promise<Array>} Returns assets that had movements in this account
+	 * @param {number} assetID ID of the Asset
+	 * @return {Promise<object>} Returns the asset information
 	 */
-	this.queryRelevantAssets = function(address) {
-		return queryRelevantAssets(this._config, address);
+	this.queryAssetInfo = function(assetID) {
+		return queryAssetInfo(this._config, assetID);
 	}
 };
 

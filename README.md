@@ -33,7 +33,7 @@ const api = new AlgoexplorerAPI();
 #### Query address transactions
 ```javascript
 (async () => {
-    console.log(await api.queryAddressTransactions(50));
+    console.log(await api.queryAccountTransactions(50));
 })().catch(e => {
     console.log(e);
 });

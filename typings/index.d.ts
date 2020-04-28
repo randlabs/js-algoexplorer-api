@@ -166,6 +166,9 @@ export interface KeyregTransaction {
 export type Transaction = PayTransaction | AssetTransferTransaction |
 AssetConfigurationTransaction | AssetFreezeTransaction | KeyregTransaction;
 
+export type AssetTransaction = AssetTransferTransaction | AssetConfigurationTransaction |
+AssetFreezeTransaction;
+
 export interface KeyReg {
 	voteKey: string;
 	selectionKey: string;
@@ -190,6 +193,11 @@ export interface Stats {
 	fee: number;
 }
 
+export interface PriceStats {
+	price: number;
+	timestamp: number;
+}
+
 export interface AddressInfo {
 	address: Address;
 	numTxs: number;
@@ -199,10 +207,31 @@ export interface AddressInfo {
 }
 
 export interface AssetInfo {
-	id: number;
-	balance: number;
-	name?: string;
+	assetID: number;
 	unitName?: string;
+	assetName?: string;
+	url?: string;
+	metadataHashb64?: string;
+	decimals?: number;
+	creator: Address;
+	totalSupply: number;
+	circulatingSupply: number;
+	defaultFrozen: boolean;
+	managerAccount: Address;
+	reserveAccount: Address;
+	freezeAccount: Address;
+	clawbackAccount: Address;
+	assetReason?: "creation" | "destruction" | "reconfiguration";
+}
+
+export interface AssetBalance {
+	subscribed: boolean;
+	onceSubscribed: boolean;
+	balance: number;
+	decimals?: number;
+	unitName?: string;
+	assetName?: string;
+	numAssetTxs: number;
 	timestamp: number;
 }
 
@@ -220,17 +249,22 @@ export default class AlgoexplorerApi {
 	queryBlockTransactions(round: number): Promise<Transaction[]>;
 	queryStatus(): Promise<Status>;
 	queryStats(): Promise<Stats>;
-	queryAddress(address: Address): Promise<AddressInfo>;
-	queryAddressTransactions(address: Address, count: number): Promise<Transaction[]>;
-	queryAddressTransactionsFromInterval(address: Address, from: number, to: number): Promise<Transaction[]>;
-	queryAddressTransactionsByDate(address: Address, since: number, until?: number): Promise<Transaction[]>;
-	queryAddressTransactionsByDate(address: Address, since: number, until?: number, count?: boolean): Promise<number>;
+	queryAlgoPrice(): Promise<PriceStats>
+	queryAccount(address: Address): Promise<AddressInfo>;
+	queryAccountTransactions(address: Address, count: number): Promise<Transaction[]>;
+	queryAccountTransactionsFromInterval(address: Address, from: number, to: number): Promise<Transaction[]>;
+	queryAccountTransactionsByDate(address: Address, since: number, until?: number): Promise<Transaction[]>;
+	queryAccountTransactionsByDate(address: Address, since: number, until?: number, count?: boolean): Promise<number>;
+	queryAccountAssets(address: Address): Promise<{ [key: string]: AssetBalance }>;
+	queryAccountAssetTransactionsFromInterval(address: Address, assetID: number, from: number, to: number): Promise<AssetTransaction[]>;
 	queryTransactionsCount(): Promise<number>;
 	queryTransactions(id: number | TxHash): Promise<Transaction>;
 	queryLatestTransactions(count: number): Promise<Transaction[]>;
 	queryTransactionsFromInterval(from: number, to: number): Promise<Transaction[]>;
 	queryTransactionsByDate(since: number, until?: number): Promise<Transaction[]>;
 	queryTransactionsByDate(since: number, until?: number, count?: boolean): Promise<number>;
+	queryAssetTransactions(assetID: number, count: number): Promise<AssetTransaction[]>;
+	queryAssetTransactionsFromInterval(assetID: number, from: number, to: number): Promise<AssetTransaction[]>;
 	sendTransaction(hexa: Hexa): Promise<TxHash>;
-	queryRelevantAssets(address: Address): Promise<AssetInfo[]>;
+	queryAssetInfo(assetID: number): Promise<AssetInfo>;
 }

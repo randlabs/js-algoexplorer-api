@@ -80,11 +80,45 @@ async function queryTransactionsByDate(config, since, until, count) {
 	return result.body;
 }
 
+async function queryAssetTransactions(config, assetID, count) {
+	if (typeof (assetID) !== "number" || assetID < 0) {
+		throw new Error("Invalid arguments, assetID must be a positive integer");
+	}
+	if (typeof (count) !== "number" || count < 1) {
+		throw new Error("Invalid arguments, COUNT must be a positive integer");
+	}
+	if (count > 100) {
+		throw new Error("Max blocks to query is 100");
+	}
+	const result = await fetchGet(config.url + "/transaction/asset/" + assetID.toString() + "/latest/" + count.toString());
+
+	return result.body;
+}
+
+async function queryAssetTransactionsFromInterval(config, assetID, from, to) {
+	if (typeof (from) !== "number" || typeof (to) !== "number" || (to - from) < 1 || from < 0 || to < from) {
+		throw new Error("Invalid arguments, FROM and TO must be a positive integers, and TO must be greater than FROM");
+	}
+	if (typeof (assetID) !== "number" || assetID < 0) {
+		throw new Error("Invalid arguments, assetID must be a positive integer");
+	}
+	if (to - from > 100) {
+		throw new Error("Max blocks to query is 100");
+	}
+
+	const result = await fetchGet(config.url + "/transaction/asset/" + assetID.toString() +
+	"/from/" + from.toString() + "/to/" + to.toString());
+
+	return result.body;
+}
+
 module.exports = {
 	queryTransactionsCount,
 	queryTransactions,
 	queryLatestTransactions,
 	queryTransactionsFromInterval,
-	queryTransactionsByDate
+	queryTransactionsByDate,
+	queryAssetTransactions,
+	queryAssetTransactionsFromInterval
 };
 
